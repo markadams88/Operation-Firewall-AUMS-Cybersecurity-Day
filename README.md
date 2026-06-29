@@ -10,11 +10,11 @@ Each layer is a real branch of cryptography — Caesar ciphers, primality, hash 
 
 ## What's in here
 
-- **`index.html`** — the entire app, single self-contained file. Drop it on any web server.
+- **`index.html`** — the entire app, single self-contained file. Drop it on any web server, or open locally.
 
-That's it. No build step, no dependencies to install. Open the file in a browser and play.
+That's it. No build step, no dependencies to install. The JSX is pre-compiled; the file just needs React + Tailwind from public CDNs on first load.
 
-The app uses React + Tailwind + Babel via CDN. It is ~96 KB of HTML/CSS/JSX with all five sections, popups, warnings, well-done screens, a Caesar wheel, a frequency analyser, a hash-table builder, a binary primality forensics grid, an RSA factorisation puzzle, a composite cipher decoder, a Mission Control terminal log, and a 3-rung hint ladder on every task.
+The app is ~108 KB of HTML/CSS/JS with all five sections, popups, warnings, well-done screens, a Caesar wheel, a frequency analyser, a hash-table builder, a binary primality forensics grid, an RSA factorisation puzzle, a composite cipher decoder, a Mission Control terminal log, and a 3-rung hint ladder on every task.
 
 ---
 
@@ -36,12 +36,12 @@ The full puzzle progression is gated: students cannot enter Section B until they
 
 ### Option 1 — open the file locally
 
-Double-click `index.html`. Done.
+Double-click `index.html`. Your browser opens it. Needs internet on first load to fetch React + Tailwind from CDN.
 
-### Option 2 — host it on GitHub Pages (recommended for classroom)
+### Option 2 — host on GitHub Pages (recommended for classroom)
 
 1. Create a new GitHub repository (e.g. `operation-firewall`)
-2. Upload `index.html` (and these other files) to the root
+2. Upload these files to the root
 3. Go to **Settings → Pages**
 4. Source: **Deploy from a branch**, Branch: **main**, Folder: **/ (root)**
 5. Click **Save**
@@ -51,68 +51,33 @@ Double-click `index.html`. Done.
 
 ### Option 3 — any other static host
 
-Netlify, Vercel, Cloudflare Pages, your school server — drop the file anywhere static files are served.
+Netlify, Vercel, Cloudflare Pages, your school's own web space — drop the file anywhere static files are served.
 
 ---
 
 ## Customising
 
-Open `index.html` in a text editor. Everything is documented at the top.
+Open `index.html` in a text editor. The structure is:
 
-- **Colours** — search for `:root {` near the top of the `<style>` block. The AUMS palette is defined as CSS variables.
-- **Puzzle answers** — the ciphertexts and answers are hardcoded in each `Section*` component. Search for e.g. `A1_CIPHER`, `A2_CIPHER`, `D3_N`, etc.
-- **Hints** — each task has a `<HintLadder>` with three escalating hints. Search for `HintLadder` to find them.
-- **Real-world flavour text** — search for `realWorld:` in the `onComplete` calls in each section.
-- **School / event branding** — the title bar shows "OPERATION FIREWALL // ASTON CYBER COMMAND". Search for "ASTON" to retheme.
+1. `<head>` — CSS variables (AUMS palette), animations, fonts
+2. `<body>` — empty `<div id="root">` for React to mount into
+3. `<script src="https://unpkg.com/react@18.2.0/...">` — React from CDN
+4. `<script src="https://unpkg.com/react-dom@18.2.0/...">` — ReactDOM from CDN
+5. `<script src="https://cdn.tailwindcss.com">` — Tailwind from CDN
+6. `<script>...compiled app code...</script>` — the whole app, pre-compiled JavaScript
 
-If you change a puzzle answer, also update the corresponding hint and the section's `realWorld` callback so things stay coherent.
+To change colours, edit the `:root { --astonorange: ...; }` block near the top.
 
----
-
-## On the day — how it's meant to run
-
-1. Project the [`Operation Firewall PowerPoint deck`](https://github.com/<your-username>/operation-firewall) on the big screen up front. (Or use the slides PDF — both are designed to mirror the app.)
-2. Students work in teams of four at laptops or tablets, each team on `index.html` via the link.
-3. Each team enters their school name + a team callsign at the start. The app then walks them through Briefing → 5 Sections → Debrief.
-4. At the end of each section the app shows a big "REPORT IN" pop-up with the codeword. Students raise their hand and call out: *"School ___ — Section A complete. Codeword: JHLZHY!"*
-5. You mark them off on a board at the front. The team that breaches all five layers — and ideally drafts a post-quantum cipher design in Section E — wins.
-
-The full 60 minutes:
-
-| Time | Stage |
-|------|-------|
-| 0–3 min | Intro · briefing · team setup |
-| 3–13 min | Section A (Caesar) |
-| 13–23 min | Section B (Firewall) |
-| 23–35 min | Section C (Hash) |
-| 35–47 min | Section D (RSA) |
-| 47–57 min | Section E (Quantum) |
-| 57–60 min | Debrief |
+To change puzzle answers, search for the constants in each `Section*` function (e.g. `A1_CIPHER`, `A3_TARGET`, `D3_N`). Be aware the inline script is pre-compiled — there's no JSX to edit; you'd be editing `React.createElement` calls.
 
 ---
 
 ## Why this exists
 
-Most "cyber-for-schools" content stops at "isn't crypto cool". This goes the other way: every layer is a piece of GCSE-touching maths the students are *already* learning (modular arithmetic, place value, primality, function inverses, factorisation), wrapped in a real-world threat the students have heard of (WannaCry, LinkedIn, etc.), and explicitly named so the maths-cyber bridge is unmissable. The aim is that by the time a Year 9 student finishes Section E, they have personally cracked a hash, factored a semi-prime by trial division, and reasoned about why a quantum computer changes everything.
-
-It's the kind of session that a maths department can run once a year, and the same students will come back two years later asking to do A-level Further Maths "because of the RSA thing."
+Most "cyber-for-schools" content stops at "isn't crypto cool". This goes the other way: every layer is a piece of GCSE-touching maths the students are *already* learning (modular arithmetic, place value, primality, function inverses, factorisation), wrapped in a real-world threat they've heard of, with the maths-cyber bridge made unmissable. The aim is that by the time a Year 9 student finishes Section E, they have personally cracked a hash, factored a semi-prime by trial division, and reasoned about why a quantum computer changes everything.
 
 ---
 
 ## Credits
 
-Built for Aston University Mathematics School (AUMS) · part of the Aston University STEM Education Academy Trust · Maths & Cybersecurity Day. Free to use, modify, share, and adapt under the MIT licence (see `LICENSE`).
-
-The puzzles' mathematical content is original. The framing (Caesar, RSA, Shor, etc.) is standard cryptography curriculum. The real-world hack summaries are based on public reporting.
-
----
-
-## File structure
-
-```
-operation-firewall/
-├── index.html       # the entire app
-├── README.md        # this file
-├── LICENSE          # MIT
-└── .gitignore
-```
+Built for Aston University Mathematics School (AUMS), part of the Aston University STEM Education Academy Trust. Free to use, modify, share, and adapt under the MIT licence (see `LICENSE`). The mathematical content is original; the framing is standard cryptography curriculum; the real-world hack summaries are based on public reporting.
