@@ -1,0 +1,2440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Operation Firewall — Aston Cyber Command</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/react@18.2.0/umd/react.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js" crossorigin></script>
+<style>
+  :root {
+    --paperdark: #1A0020;
+    --paperdark-2: #2A0840;
+    --astondeep: #610064;
+    --astonpurple: #920088;
+    --astonpink: #D30063;
+    --astonorange: #F93E26;
+    --warnred: #C8102E;
+    --termgreen: #00FF66;
+    --white: #FFFFFF;
+    --offwhite: #F4F0F5;
+    --midgrey: #B5A8BC;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--paperdark);
+    background-image:
+      repeating-linear-gradient(0deg, transparent 0px, transparent 2px, rgba(97, 0, 100, 0.05) 3px, transparent 4px),
+      radial-gradient(ellipse at top, rgba(97, 0, 100, 0.18) 0%, transparent 55%);
+    color: var(--offwhite);
+    font-family: 'Inter', system-ui, sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  .font-display { font-family: 'Orbitron', 'Arial Black', sans-serif; letter-spacing: 0.05em; }
+  .font-mono { font-family: 'JetBrains Mono', monospace; }
+  .text-astondeep { color: var(--astondeep); }
+  .text-astonpink { color: var(--astonpink); }
+  .text-astonorange { color: var(--astonorange); }
+  .text-termgreen { color: var(--termgreen); }
+  .text-warnred { color: var(--warnred); }
+  .text-offwhite { color: var(--offwhite); }
+  .text-midgrey { color: var(--midgrey); }
+  .bg-paperdark { background-color: var(--paperdark); }
+  .bg-paperdark-2 { background-color: var(--paperdark-2); }
+  .bg-astondeep { background-color: var(--astondeep); }
+  .bg-astonpink { background-color: var(--astonpink); }
+  .bg-astonorange { background-color: var(--astonorange); }
+  .bg-warnred { background-color: var(--warnred); }
+  .border-astondeep { border-color: var(--astondeep); }
+  .border-astonpink { border-color: var(--astonpink); }
+  .border-astonorange { border-color: var(--astonorange); }
+  .border-termgreen { border-color: var(--termgreen); }
+  .border-warnred { border-color: var(--warnred); }
+
+  @keyframes pulseOrange { 0%,100%{box-shadow:0 0 0 0 rgba(249,62,38,0.55);} 50%{box-shadow:0 0 0 14px rgba(249,62,38,0);} }
+  @keyframes glowGreen { 0%,100%{box-shadow:0 0 10px rgba(0,255,102,0.45);} 50%{box-shadow:0 0 22px rgba(0,255,102,0.85);} }
+  @keyframes glowPink { 0%,100%{box-shadow:0 0 10px rgba(211,0,99,0.45);} 50%{box-shadow:0 0 22px rgba(211,0,99,0.85);} }
+  @keyframes glowRed { 0%,100%{box-shadow:0 0 10px rgba(200,16,46,0.55);} 50%{box-shadow:0 0 28px rgba(200,16,46,0.95);} }
+  @keyframes shake { 0%,100%{transform:translateX(0);} 20%,60%{transform:translateX(-10px);} 40%,80%{transform:translateX(10px);} }
+  @keyframes slideUp { from{transform:translateY(24px);opacity:0;} to{transform:translateY(0);opacity:1;} }
+  @keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
+  @keyframes blink { 0%,49%{opacity:1;} 50%,100%{opacity:0;} }
+  @keyframes scanLine { 0%{transform:translateY(-100%);} 100%{transform:translateY(110vh);} }
+  @keyframes confetti { 0%{transform:translateY(0) rotate(0);opacity:1;} 100%{transform:translateY(800px) rotate(720deg);opacity:0;} }
+
+  .animate-pulse-orange { animation: pulseOrange 2.2s infinite; }
+  .animate-glow-green { animation: glowGreen 2s infinite; }
+  .animate-glow-pink { animation: glowPink 2s infinite; }
+  .animate-glow-red { animation: glowRed 1.4s infinite; }
+  .animate-shake { animation: shake 0.42s ease-in-out; }
+  .animate-slide-up { animation: slideUp 0.42s cubic-bezier(.2,.7,.3,1.0); }
+  .animate-fade-in { animation: fadeIn 0.55s ease-out; }
+  .cursor-blink::after { content: '_'; animation: blink 1s infinite; margin-left: 2px; }
+
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: var(--paperdark-2); }
+  ::-webkit-scrollbar-thumb { background: var(--astondeep); border-radius: 5px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--astonpink); }
+
+  .btn-primary {
+    background-color: var(--astonorange); color: white; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; padding: 0.85rem 1.6rem; border-radius: 4px; border: none;
+    cursor: pointer; font-family: 'Orbitron', sans-serif; transition: all 0.2s;
+    box-shadow: 0 2px 0 rgba(0,0,0,0.4);
+  }
+  .btn-primary:hover:not(:disabled) { background-color: var(--astonpink); transform: translateY(-2px); box-shadow: 0 6px 18px rgba(249,62,38,0.45); }
+  .btn-primary:disabled { opacity: 0.32; cursor: not-allowed; }
+  .btn-ghost {
+    background: transparent; color: var(--astonorange); border: 1.5px solid var(--astonorange);
+    padding: 0.55rem 1.1rem; font-family: 'Orbitron', sans-serif; text-transform: uppercase;
+    letter-spacing: 0.1em; cursor: pointer; font-weight: 700; border-radius: 4px; transition: all 0.2s;
+    font-size: 0.85rem;
+  }
+  .btn-ghost:hover:not(:disabled) { background: rgba(249,62,38,0.12); transform: translateY(-1px); }
+  .btn-ghost:disabled { opacity: 0.4; cursor: not-allowed; }
+  .btn-pink {
+    background-color: var(--astonpink); color: white; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; padding: 0.85rem 1.6rem; border-radius: 4px; border: none;
+    cursor: pointer; font-family: 'Orbitron', sans-serif; transition: all 0.2s;
+  }
+  .btn-pink:hover:not(:disabled) { background-color: var(--astonpurple); transform: translateY(-2px); }
+  .btn-pink:disabled { opacity: 0.35; cursor: not-allowed; }
+
+  .input-cyber {
+    background: rgba(26, 0, 32, 0.85); border: 1.5px solid var(--astondeep); color: var(--white);
+    padding: 0.55rem 0.85rem; font-family: 'JetBrains Mono', monospace; border-radius: 4px;
+    outline: none; transition: all 0.2s; font-size: 1.1rem; font-weight: 700;
+  }
+  .input-cyber:focus { border-color: var(--astonorange); box-shadow: 0 0 0 2px rgba(249, 62, 38, 0.25); }
+  .input-cyber.correct { border-color: var(--termgreen); box-shadow: 0 0 0 2px rgba(0,255,102,0.3); }
+  .input-cyber.wrong { border-color: var(--warnred); box-shadow: 0 0 0 2px rgba(200,16,46,0.3); }
+
+  .card { background-color: var(--paperdark-2); border: 1px solid var(--astondeep); border-radius: 6px; }
+  .card-orange { border-color: var(--astonorange); }
+  .card-pink { border-color: var(--astonpink); }
+
+  .badge-section {
+    background-color: var(--astonorange); color: white; font-family: 'Orbitron', sans-serif;
+    font-weight: 900; display: flex; align-items: center; justify-content: center;
+  }
+
+  .cipher-cell {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-width: 2.6rem; height: 3rem; padding: 0 0.5rem; border-radius: 4px; margin: 0.18rem;
+    background: rgba(0,0,0,0.65); border: 1px solid var(--termgreen); color: var(--termgreen);
+    font-family: 'JetBrains Mono', monospace; font-size: 1.5rem; font-weight: 700;
+  }
+  .cipher-cell.space { background: transparent; border: none; min-width: 0.8rem; }
+
+  .server-card {
+    background-color: var(--paperdark-2); border: 1.5px solid var(--astondeep);
+    border-radius: 6px; padding: 0.9rem; transition: all 0.2s;
+  }
+  .server-card.tested { border-color: var(--astonpurple); }
+  .server-card.prime { border-color: var(--termgreen); animation: glowGreen 2s infinite; }
+  .server-card.selected-intruder { border-color: var(--warnred); animation: glowRed 1.4s infinite; }
+
+  .prime-btn {
+    background-color: var(--astondeep); color: white; font-family: 'JetBrains Mono', monospace;
+    border: 1.5px solid var(--astonpurple); border-radius: 4px; padding: 0.6rem 0.85rem;
+    font-weight: 700; cursor: pointer; transition: all 0.2s; font-size: 1.05rem; min-width: 3.5rem;
+  }
+  .prime-btn:hover:not(:disabled) { background-color: var(--astonpurple); transform: translateY(-1px); }
+  .prime-btn.correct { background-color: var(--termgreen); color: var(--paperdark); border-color: var(--termgreen); animation: glowGreen 2s infinite; }
+  .prime-btn.wrong { background-color: var(--paperdark-2); color: var(--warnred); border-color: var(--warnred); opacity: 0.45; }
+  .prime-btn:disabled { cursor: not-allowed; }
+
+  .hash-row { display: grid; grid-template-columns: 3rem 4rem 3rem 5rem; align-items: center; gap: 0.5rem; padding: 0.25rem 0.5rem; border-bottom: 1px solid rgba(97,0,100,0.4); }
+  .hash-row .letter { font-family: 'Orbitron'; font-weight: 700; color: var(--astonorange); font-size: 1.05rem; }
+  .hash-row .formula { color: var(--midgrey); font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; }
+  .hash-row .arrow { color: var(--astonorange); font-weight: 700; text-align: center; }
+
+  .loading-screen {
+    position: fixed; inset: 0; background: var(--paperdark);
+    display: flex; align-items: center; justify-content: center; z-index: 9999;
+    flex-direction: column; gap: 1rem;
+  }
+  .confetti-piece {
+    position: fixed; width: 10px; height: 14px; top: -20px;
+    animation: confetti 2.2s cubic-bezier(.2,.7,.3,1.0) forwards;
+    pointer-events: none; z-index: 90;
+  }
+  .scan-line {
+    position: fixed; left: 0; right: 0; height: 80px;
+    background: linear-gradient(to bottom, transparent, rgba(0,255,102,0.04), transparent);
+    pointer-events: none; z-index: 1;
+    animation: scanLine 11s linear infinite;
+  }
+  @media (max-width: 640px) { .hide-mobile { display: none; } }
+</style>
+</head>
+<body>
+  <div id="root">
+    <div class="loading-screen">
+      <div class="font-display text-astonorange" style="font-size:2.2rem;font-weight:900;letter-spacing:0.25em;">INITIALIZING . . .</div>
+      <div class="font-mono text-termgreen" style="font-size:0.9rem;">&gt; connecting to Aston Cyber Command</div>
+    </div>
+  </div>
+  <div class="scan-line"></div>
+
+<script>
+const {
+  useState,
+  useEffect,
+  useRef,
+  useMemo
+} = React;
+
+// === HELPERS ===
+function letterToIndex(c) {
+  return c.charCodeAt(0) - 65;
+}
+function indexToLetter(n) {
+  return String.fromCharCode((n % 26 + 26) % 26 + 65);
+}
+function caesarShift(text, shift) {
+  return text.toUpperCase().split('').map(c => {
+    if (c >= 'A' && c <= 'Z') return indexToLetter(letterToIndex(c) + shift);
+    return c;
+  }).join('');
+}
+function hashFn(c) {
+  return indexToLetter((3 * letterToIndex(c) + 7) % 26);
+}
+function fmtTime(seconds) {
+  const m = Math.floor(seconds / 60);
+  const s = seconds % 60;
+  return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+}
+
+// === CHROME COMPONENTS ===
+function ClassifiedHeader({
+  schoolName,
+  teamName,
+  elapsed
+}) {
+  return /*#__PURE__*/React.createElement("header", {
+    className: "w-full"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "bg-astonorange w-full"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "max-w-7xl mx-auto px-4 py-1.5 flex items-center justify-between font-display text-white text-xs sm:text-sm font-bold tracking-widest"
+  }, /*#__PURE__*/React.createElement("span", null, "CLASSIFIED // ASTON CYBER COMMAND // EYES ONLY"), /*#__PURE__*/React.createElement("span", {
+    className: "hide-mobile font-mono"
+  }, schoolName || 'UNASSIGNED', " · ", teamName || 'NO CALLSIGN'))), /*#__PURE__*/React.createElement("div", {
+    className: "bg-paperdark-2 border-b border-astondeep w-full"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "max-w-7xl mx-auto px-4 py-2 flex items-center justify-between text-xs sm:text-sm font-mono"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-astonorange font-bold"
+  }, "OP-FW-9G · TOP SECRET"), /*#__PURE__*/React.createElement("div", {
+    className: "text-termgreen hide-mobile"
+  }, "▲ THREAT LEVEL: ", /*#__PURE__*/React.createElement("span", {
+    className: "font-bold"
+  }, "SEVERE")), /*#__PURE__*/React.createElement("div", {
+    className: "text-midgrey"
+  }, "CLOCK ", /*#__PURE__*/React.createElement("span", {
+    className: "text-white font-bold"
+  }, fmtTime(elapsed))))));
+}
+function ToastStack({
+  toasts
+}) {
+  return /*#__PURE__*/React.createElement("div", {
+    className: "fixed right-4 top-24 z-50 flex flex-col gap-2 max-w-sm"
+  }, toasts.map(t => /*#__PURE__*/React.createElement("div", {
+    key: t.id,
+    className: `animate-slide-up border-2 rounded p-3 font-mono text-sm shadow-lg ${t.type === 'success' ? 'border-termgreen bg-paperdark-2 text-termgreen' : t.type === 'error' ? 'border-warnred bg-paperdark-2 text-warnred animate-glow-red' : t.type === 'info' ? 'border-astonorange bg-paperdark-2 text-astonorange' : 'border-astonpink bg-paperdark-2 text-astonpink'}`
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-start gap-2"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "font-display font-bold"
+  }, t.type === 'success' ? '✓' : t.type === 'error' ? '✗' : t.type === 'info' ? 'ℹ' : '!'), /*#__PURE__*/React.createElement("div", {
+    className: "flex-1"
+  }, t.title && /*#__PURE__*/React.createElement("div", {
+    className: "font-display font-bold tracking-wider mb-1 text-xs"
+  }, t.title), /*#__PURE__*/React.createElement("div", {
+    className: "text-xs leading-snug"
+  }, t.message))))));
+}
+function Confetti({
+  active,
+  count = 32
+}) {
+  if (!active) return null;
+  const colors = ['#F93E26', '#D30063', '#920088', '#00FF66', '#FFFFFF'];
+  return /*#__PURE__*/React.createElement("div", {
+    className: "fixed inset-0 pointer-events-none z-40"
+  }, Array.from({
+    length: count
+  }, (_, i) => {
+    const left = Math.random() * 100;
+    const delay = Math.random() * 0.4;
+    const dur = 1.6 + Math.random() * 1.2;
+    const color = colors[i % colors.length];
+    return /*#__PURE__*/React.createElement("div", {
+      key: i,
+      className: "confetti-piece",
+      style: {
+        left: `${left}%`,
+        background: color,
+        animationDelay: `${delay}s`,
+        animationDuration: `${dur}s`
+      }
+    });
+  }));
+}
+function WarningModal({
+  open,
+  title,
+  body,
+  onClose
+}) {
+  if (!open) return null;
+  return /*#__PURE__*/React.createElement("div", {
+    className: "fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center px-4 animate-fade-in"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "max-w-md w-full bg-paperdark-2 border-2 rounded p-6 animate-slide-up border-warnred animate-glow-red"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center gap-3 mb-3"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "font-display text-3xl text-warnred"
+  }, "▲"), /*#__PURE__*/React.createElement("div", {
+    className: "font-display font-bold text-xl tracking-widest text-warnred"
+  }, title)), /*#__PURE__*/React.createElement("div", {
+    className: "text-offwhite text-sm leading-relaxed mb-5"
+  }, body), /*#__PURE__*/React.createElement("button", {
+    className: "btn-primary w-full",
+    onClick: onClose
+  }, "ACKNOWLEDGE")));
+}
+function ReportInOverlay({
+  data,
+  onContinue,
+  schoolName
+}) {
+  if (!data) return null;
+  return /*#__PURE__*/React.createElement("div", {
+    className: "fixed inset-0 bg-black bg-opacity-85 z-50 flex items-center justify-center px-4 py-8 overflow-auto animate-fade-in"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "max-w-2xl w-full bg-paperdark-2 border-2 border-astonorange rounded p-6 sm:p-8 animate-slide-up animate-glow-pink"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-center"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-astonorange font-display font-bold text-xs tracking-widest mb-2"
+  }, "▶ REPORT IN — SECTION ", data.letter), /*#__PURE__*/React.createElement("div", {
+    className: "font-display font-black text-3xl sm:text-5xl text-white mb-1"
+  }, "SECTION COMPLETE"), /*#__PURE__*/React.createElement("div", {
+    className: "text-astonpink font-display tracking-widest text-sm mb-6"
+  }, data.sectionName), /*#__PURE__*/React.createElement("div", {
+    className: "bg-black border-2 border-termgreen rounded p-4 mb-4 text-left"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-termgreen font-mono text-xs mb-2"
+  }, "> RAISE YOUR HAND AND CALL OUT:"), /*#__PURE__*/React.createElement("div", {
+    className: "text-white font-mono text-sm sm:text-base break-words"
+  }, "\"School ", schoolName || '________', " — Section ", data.letter, " complete. ", data.calloutLabel, ": ", /*#__PURE__*/React.createElement("span", {
+    className: "text-termgreen font-bold"
+  }, data.codeword), "\"")), data.realWorld && /*#__PURE__*/React.createElement("div", {
+    className: "bg-paperdark border-l-4 border-astonorange p-3 mb-4 text-left"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "font-display text-astonorange text-xs font-bold tracking-widest mb-1"
+  }, "▲ REAL WORLD"), /*#__PURE__*/React.createElement("div", {
+    className: "text-offwhite text-sm leading-snug"
+  }, data.realWorld)), /*#__PURE__*/React.createElement("button", {
+    className: "btn-primary text-base",
+    onClick: onContinue
+  }, data.letter === 'E' ? 'COMPLETE MISSION ▶' : `MOVE TO SECTION ${data.next} ▶`))));
+}
+function TerminalLog({
+  entries,
+  open,
+  onToggle
+}) {
+  const scrollRef = useRef(null);
+  useEffect(() => {
+    if (scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+  }, [entries, open]);
+  return /*#__PURE__*/React.createElement("div", {
+    className: "fixed bottom-0 left-0 right-0 z-30"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "max-w-7xl mx-auto"
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: onToggle,
+    className: "w-full bg-astondeep text-white font-display font-bold tracking-widest text-xs py-1.5 px-4 flex items-center justify-between border-t-2 border-astonorange hover:bg-astonpink transition-colors"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "flex items-center gap-2"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "text-termgreen"
+  }, "●"), " MISSION CONTROL TERMINAL"), /*#__PURE__*/React.createElement("span", {
+    className: "font-mono"
+  }, open ? '▼ HIDE' : '▲ SHOW', " (", entries.length, ")")), open && /*#__PURE__*/React.createElement("div", {
+    ref: scrollRef,
+    className: "bg-black bg-opacity-95 border-t border-termgreen overflow-y-auto",
+    style: {
+      maxHeight: '180px'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "p-3 font-mono text-xs space-y-0.5"
+  }, entries.length === 0 && /*#__PURE__*/React.createElement("div", {
+    className: "text-midgrey"
+  }, "> awaiting input . . ."), entries.map((e, i) => /*#__PURE__*/React.createElement("div", {
+    key: i,
+    className: e.type === 'success' ? 'text-termgreen' : e.type === 'error' ? 'text-warnred' : e.type === 'warn' ? 'text-astonorange' : 'text-offwhite'
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "text-midgrey"
+  }, "[", e.t, "]"), " ", /*#__PURE__*/React.createElement("span", {
+    className: "font-bold"
+  }, "›"), " ", e.msg))))));
+}
+function HintLadder({
+  hints,
+  taskId
+}) {
+  const [revealed, setRevealed] = useState(0);
+  useEffect(() => {
+    setRevealed(0);
+  }, [taskId]);
+  return /*#__PURE__*/React.createElement("div", {
+    className: "mt-4 border-l-4 border-astonpink pl-3"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-astonpink font-display font-bold tracking-widest text-xs mb-2"
+  }, "▶ HINT LADDER (use only if stuck)"), /*#__PURE__*/React.createElement("div", {
+    className: "space-y-1.5"
+  }, hints.map((h, i) => /*#__PURE__*/React.createElement("div", {
+    key: i
+  }, i < revealed ? /*#__PURE__*/React.createElement("div", {
+    className: "bg-paperdark-2 border border-astondeep rounded p-2 text-sm text-offwhite animate-fade-in"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "text-astonpink font-display font-bold tracking-widest text-xs mr-2"
+  }, "H", i + 1, ":"), h) : i === revealed ? /*#__PURE__*/React.createElement("button", {
+    className: "btn-ghost text-xs",
+    onClick: () => setRevealed(revealed + 1)
+  }, "Reveal hint ", i + 1, " of ", hints.length) : null))));
+}
+
+// === INTRO + BRIEFING + MAP ===
+function IntroScreen({
+  schoolName,
+  teamName,
+  setSchool,
+  setTeam,
+  onStart
+}) {
+  const canStart = schoolName.trim().length > 0 && teamName.trim().length > 0;
+  return /*#__PURE__*/React.createElement("div", {
+    className: "max-w-3xl mx-auto px-4 py-10 animate-fade-in"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-center mb-8"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-astonorange font-display font-bold tracking-widest text-xs mb-2"
+  }, "CLASSIFIED // EYES ONLY"), /*#__PURE__*/React.createElement("h1", {
+    className: "font-display font-black text-white",
+    style: {
+      fontSize: 'clamp(2.5rem,8vw,5rem)',
+      lineHeight: 1
+    }
+  }, "OPERATION"), /*#__PURE__*/React.createElement("h1", {
+    className: "font-display font-black text-astonpink",
+    style: {
+      fontSize: 'clamp(2.5rem,8vw,5rem)',
+      lineHeight: 1
+    }
+  }, "FIREWALL"), /*#__PURE__*/React.createElement("div", {
+    className: "text-offwhite italic text-lg mt-3"
+  }, "The Aston Database Heist"), /*#__PURE__*/React.createElement("div", {
+    className: "w-32 h-px bg-astonorange mx-auto my-4"
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "card p-5 mb-6"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-astonorange font-display font-bold tracking-widest text-xs mb-3"
+  }, "▲ AUTHENTICATION REQUIRED"), /*#__PURE__*/React.createElement("div", {
+    className: "space-y-4"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "block"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-astonpink font-display text-xs font-bold tracking-widest mb-1"
+  }, "SCHOOL NAME"), /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    className: "input-cyber w-full",
+    maxLength: 30,
+    placeholder: "e.g. KING EDWARD VI",
+    value: schoolName,
+    onChange: e => setSchool(e.target.value.toUpperCase())
+  })), /*#__PURE__*/React.createElement("label", {
+    className: "block"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-astonpink font-display text-xs font-bold tracking-widest mb-1"
+  }, "TEAM CALLSIGN"), /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    className: "input-cyber w-full",
+    maxLength: 20,
+    placeholder: "e.g. CIPHER WOLVES",
+    value: teamName,
+    onChange: e => setTeam(e.target.value.toUpperCase())
+  })))), /*#__PURE__*/React.createElement("div", {
+    className: "card p-5 mb-6 font-mono text-sm"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-termgreen mb-2"
+  }, "> authenticating . . . [OK]"), /*#__PURE__*/React.createElement("div", {
+    className: "text-termgreen mb-2"
+  }, "> loading threat intel . . . [OK]"), /*#__PURE__*/React.createElement("div", {
+    className: "text-termgreen mb-2"
+  }, "> commissioning team as: ", /*#__PURE__*/React.createElement("span", {
+    className: "text-white"
+  }, teamName || '________')), /*#__PURE__*/React.createElement("div", {
+    className: "text-termgreen mb-2"
+  }, "> assigning to: ", /*#__PURE__*/React.createElement("span", {
+    className: "text-white"
+  }, schoolName || '________')), /*#__PURE__*/React.createElement("div", {
+    className: "text-astonorange cursor-blink"
+  }, "> awaiting authorisation")), /*#__PURE__*/React.createElement("div", {
+    className: "text-center"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn-primary text-lg",
+    disabled: !canStart,
+    onClick: onStart
+  }, "▶ ENTER COMMAND CENTRE"), !canStart && /*#__PURE__*/React.createElement("div", {
+    className: "text-midgrey text-xs mt-2 font-mono"
+  }, "Enter school name and team callsign to continue.")));
+}
+function MissionBriefing({
+  onContinue
+}) {
+  return /*#__PURE__*/React.createElement("div", {
+    className: "max-w-5xl mx-auto px-4 py-6 animate-fade-in"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "bg-astondeep border-b-2 border-astonorange py-4 px-5 mb-4"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "font-display font-black text-white text-2xl sm:text-3xl tracking-wider"
+  }, "MISSION BRIEFING"), /*#__PURE__*/React.createElement("div", {
+    className: "text-astonorange font-mono text-xs sm:text-sm tracking-widest"
+  }, "CLASSIFICATION: TOP SECRET")), /*#__PURE__*/React.createElement("div", {
+    className: "card card-pink p-5 mb-5 animate-slide-up"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center gap-3 mb-3"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "font-display text-3xl text-warnred"
+  }, "▲"), /*#__PURE__*/React.createElement("div", {
+    className: "font-display font-bold text-warnred text-lg sm:text-xl tracking-widest"
+  }, "INCIDENT REPORT — A LIVE BREACH IS IN PROGRESS")), /*#__PURE__*/React.createElement("div", {
+    className: "text-offwhite leading-relaxed space-y-3"
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("strong", {
+    className: "text-white"
+  }, "08:47 GMT this morning."), " Anomalous traffic was detected against the Aston University research database. Our intrusion detection system flagged a sustained, multi-stage attack from a group calling themselves ", /*#__PURE__*/React.createElement("strong", {
+    className: "text-astonpink"
+  }, "THE CIPHER SYNDICATE"), "."), /*#__PURE__*/React.createElement("div", null, "They are trying to exfiltrate 18 years of confidential quantum-computing research. If they succeed, that research — worth hundreds of millions of pounds — will be sold on the dark web."), /*#__PURE__*/React.createElement("div", null, "Our senior analysts are tied up containing other threats. ", /*#__PURE__*/React.createElement("strong", {
+    className: "text-white"
+  }, "That's why we need you.")), /*#__PURE__*/React.createElement("div", null, "You are being temporarily commissioned as a ", /*#__PURE__*/React.createElement("strong", {
+    className: "text-white"
+  }, "Junior Cyber Mathematician"), ". You have ", /*#__PURE__*/React.createElement("strong", {
+    className: "text-astonorange"
+  }, "one hour"), " to break through five defence layers, harden the database, and lock the Syndicate out. Every layer is mathematical. Every layer is real-world."), /*#__PURE__*/React.createElement("div", {
+    className: "text-astonpink font-bold font-display tracking-widest text-sm"
+  }, "▶ THE CLOCK IS ALREADY RUNNING."))), /*#__PURE__*/React.createElement("div", {
+    className: "card card-orange p-5 mb-5 animate-slide-up"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-astonorange font-display font-bold tracking-widest text-xs mb-3"
+  }, "▲ THREAT INTELLIGENCE — 5 ATTACKS YOU MUST KNOW"), /*#__PURE__*/React.createElement("div", {
+    className: "grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm"
+  }, [{
+    title: 'TALKTALK',
+    tag: 'UK',
+    body: 'A 17-year-old used SQL injection to steal data on 157,000 customers. Fine: £400,000.'
+  }, {
+    title: 'WANNACRY',
+    tag: 'GLOBAL',
+    body: 'Ransomware locked 230,000 machines across 150 countries within hours. NHS lost £92m.'
+  }, {
+    title: 'LINKEDIN',
+    tag: 'GLOBAL',
+    body: '117 million unsalted SHA-1 password hashes leaked. Within days, 90%+ were cracked.'
+  }, {
+    title: 'EQUIFAX',
+    tag: 'USA',
+    body: '147 million records stolen — names, SSNs, DOBs — via one un-applied patch. Cost: $1.4 billion.'
+  }, {
+    title: 'SOLARWINDS',
+    tag: 'GLOBAL',
+    body: 'State-sponsored hackers hid malicious code in a routine software update used by 18,000 organisations.'
+  }, {
+    title: "SHOR'S ALG.",
+    tag: 'QUANTUM',
+    body: "A mathematical algorithm that will break RSA cryptography on a quantum computer."
+  }].map((a, i) => /*#__PURE__*/React.createElement("div", {
+    key: i,
+    className: "bg-paperdark border-l-4 border-astonorange p-2.5"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center justify-between mb-1"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "font-display font-bold text-white tracking-widest text-sm"
+  }, a.title), /*#__PURE__*/React.createElement("div", {
+    className: "font-mono text-astonorange text-xs"
+  }, a.tag)), /*#__PURE__*/React.createElement("div", {
+    className: "text-offwhite text-xs leading-snug"
+  }, a.body))))), /*#__PURE__*/React.createElement("div", {
+    className: "text-center"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn-primary text-lg animate-pulse-orange",
+    onClick: onContinue
+  }, "▶ ACCEPT THE MISSION")));
+}
+function SectionMap({
+  progress,
+  codewords,
+  onEnter,
+  schoolName,
+  teamName
+}) {
+  const stages = [{
+    id: 'A',
+    name: 'AUTHENTICATION LAYER',
+    topic: 'Caesar cipher · Frequency analysis',
+    gcse: 'Modular arithmetic',
+    time: '~10 min'
+  }, {
+    id: 'B',
+    name: 'THE FIREWALL',
+    topic: 'Binary forensics · Prime detection',
+    gcse: 'Place value · Primes',
+    time: '~10 min'
+  }, {
+    id: 'C',
+    name: 'THE HASH FUNCTION',
+    topic: 'Modular arithmetic · Inverse functions',
+    gcse: 'Function notation · Inverses',
+    time: '~12 min'
+  }, {
+    id: 'D',
+    name: 'THE PRIME VAULT',
+    topic: 'RSA · Prime factorisation',
+    gcse: 'Factorising · Trial division',
+    time: '~12 min'
+  }, {
+    id: 'E',
+    name: 'THE QUANTUM GAUNTLET',
+    topic: 'Composite cipher · Post-quantum',
+    gcse: 'Composition of inverses · Modelling',
+    time: '~10 min'
+  }];
+  const completedCount = Object.values(progress).filter(Boolean).length;
+  return /*#__PURE__*/React.createElement("div", {
+    className: "max-w-5xl mx-auto px-4 py-6 animate-fade-in"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "bg-astondeep border-b-2 border-astonorange py-4 px-5 mb-4"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "font-display font-black text-white text-2xl sm:text-3xl tracking-wider"
+  }, "COMMAND CENTRE"), /*#__PURE__*/React.createElement("div", {
+    className: "text-astonorange font-mono text-xs sm:text-sm"
+  }, "OPERATIVE: ", teamName, " · SCHOOL: ", schoolName, " · PROGRESS: ", completedCount, "/5 LAYERS BREACHED")), /*#__PURE__*/React.createElement("div", {
+    className: "space-y-3 mb-6"
+  }, stages.map((st, i) => {
+    const isComplete = progress[st.id];
+    const isLocked = i > 0 && !progress[stages[i - 1].id];
+    return /*#__PURE__*/React.createElement("button", {
+      key: st.id,
+      disabled: isLocked,
+      onClick: () => onEnter(st.id),
+      className: `block w-full text-left rounded border-2 transition-all overflow-hidden ${isComplete ? 'border-termgreen bg-paperdark-2' : isLocked ? 'border-astondeep bg-paperdark-2 opacity-55 cursor-not-allowed' : 'border-astonorange bg-paperdark-2 hover:transform animate-pulse-orange'}`
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "flex items-stretch"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: `badge-section w-16 sm:w-20 text-3xl sm:text-4xl ${isComplete ? 'bg-termgreen' : isLocked ? 'bg-astondeep' : 'bg-astonorange'}`,
+      style: isComplete ? {
+        color: 'var(--paperdark)'
+      } : {}
+    }, st.id), /*#__PURE__*/React.createElement("div", {
+      className: "flex-1 p-3 sm:p-4"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "flex items-center gap-2 mb-1 flex-wrap"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "font-display font-bold text-white text-base sm:text-lg tracking-wider"
+    }, st.name), isComplete && /*#__PURE__*/React.createElement("span", {
+      className: "text-termgreen text-xs font-display font-bold tracking-widest"
+    }, "✓ BREACHED"), isLocked && /*#__PURE__*/React.createElement("span", {
+      className: "text-midgrey text-xs font-display font-bold tracking-widest"
+    }, "🔒 LOCKED")), /*#__PURE__*/React.createElement("div", {
+      className: "text-offwhite text-sm"
+    }, st.topic), /*#__PURE__*/React.createElement("div", {
+      className: "flex flex-wrap gap-3 mt-1.5"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "text-astonpink text-xs font-display tracking-wider"
+    }, "GCSE: ", st.gcse), /*#__PURE__*/React.createElement("span", {
+      className: "text-astonorange text-xs font-mono"
+    }, st.time)), isComplete && codewords[st.id] && /*#__PURE__*/React.createElement("div", {
+      className: "mt-2 text-termgreen text-xs font-mono"
+    }, "▶ Reported: ", codewords[st.id])), /*#__PURE__*/React.createElement("div", {
+      className: `flex items-center pr-4 font-display text-2xl ${isLocked ? 'text-midgrey' : 'text-astonorange'}`
+    }, isLocked ? '🔒' : isComplete ? '✓' : '▶')));
+  })), completedCount === 5 && /*#__PURE__*/React.createElement("div", {
+    className: "text-center"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn-primary text-lg animate-glow-green",
+    onClick: () => onEnter('complete')
+  }, "▶ FINAL DEBRIEF")), /*#__PURE__*/React.createElement("div", {
+    className: "text-midgrey text-xs text-center mt-6 font-mono"
+  }, "At the end of every section, REPORT IN to Mission Control. The board will mark your school off as you complete each layer."));
+}
+function CaesarWheel({
+  shift,
+  onShiftChange,
+  size = 280,
+  label = 'SHIFT'
+}) {
+  const cx = size / 2,
+    cy = size / 2;
+  const outerR = size * 0.40,
+    innerR = size * 0.27;
+  const letterROuter = size * 0.35,
+    letterRInner = size * 0.22;
+  const angle = -shift * (360 / 26);
+  return /*#__PURE__*/React.createElement("div", {
+    className: "flex flex-col items-center"
+  }, /*#__PURE__*/React.createElement("svg", {
+    viewBox: `0 0 ${size} ${size}`,
+    style: {
+      width: size,
+      height: size,
+      maxWidth: '100%'
+    }
+  }, /*#__PURE__*/React.createElement("defs", null, /*#__PURE__*/React.createElement("radialGradient", {
+    id: "wheelBg",
+    cx: "50%",
+    cy: "50%"
+  }, /*#__PURE__*/React.createElement("stop", {
+    offset: "0%",
+    stopColor: "#2A0840"
+  }), /*#__PURE__*/React.createElement("stop", {
+    offset: "100%",
+    stopColor: "#1A0020"
+  }))), /*#__PURE__*/React.createElement("circle", {
+    cx: cx,
+    cy: cy,
+    r: outerR + 6,
+    fill: "url(#wheelBg)",
+    stroke: "#610064",
+    strokeWidth: "1"
+  }), /*#__PURE__*/React.createElement("circle", {
+    cx: cx,
+    cy: cy,
+    r: outerR,
+    fill: "none",
+    stroke: "#920088",
+    strokeWidth: "2"
+  }), /*#__PURE__*/React.createElement("circle", {
+    cx: cx,
+    cy: cy,
+    r: innerR,
+    fill: "#1A0020",
+    stroke: "#F93E26",
+    strokeWidth: "2"
+  }), Array.from({
+    length: 26
+  }, (_, i) => {
+    const a = (i * 360 / 26 - 90) * Math.PI / 180;
+    return /*#__PURE__*/React.createElement("text", {
+      key: 'o' + i,
+      x: cx + letterROuter * Math.cos(a),
+      y: cy + letterROuter * Math.sin(a),
+      textAnchor: "middle",
+      dominantBaseline: "middle",
+      fontSize: size * 0.045,
+      fontWeight: "700",
+      fill: "#F4F0F5",
+      fontFamily: "JetBrains Mono"
+    }, indexToLetter(i));
+  }), /*#__PURE__*/React.createElement("g", {
+    transform: `rotate(${angle} ${cx} ${cy})`,
+    style: {
+      transition: 'transform 0.3s cubic-bezier(.2,.7,.3,1.0)'
+    }
+  }, Array.from({
+    length: 26
+  }, (_, i) => {
+    const a = (i * 360 / 26 - 90) * Math.PI / 180;
+    return /*#__PURE__*/React.createElement("text", {
+      key: 'i' + i,
+      x: cx + letterRInner * Math.cos(a),
+      y: cy + letterRInner * Math.sin(a),
+      textAnchor: "middle",
+      dominantBaseline: "middle",
+      fontSize: size * 0.045,
+      fontWeight: "700",
+      fill: "#F93E26",
+      fontFamily: "JetBrains Mono"
+    }, indexToLetter(i));
+  })), /*#__PURE__*/React.createElement("polygon", {
+    points: `${cx},${cy - outerR - 12} ${cx - 9},${cy - outerR + 4} ${cx + 9},${cy - outerR + 4}`,
+    fill: "#00FF66"
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center gap-3 mt-2"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn-ghost text-base",
+    onClick: () => onShiftChange((shift - 1 + 26) % 26)
+  }, "−"), /*#__PURE__*/React.createElement("div", {
+    className: "text-white font-display font-bold text-base"
+  }, label, " ", /*#__PURE__*/React.createElement("span", {
+    className: "text-astonorange"
+  }, shift)), /*#__PURE__*/React.createElement("button", {
+    className: "btn-ghost text-base",
+    onClick: () => onShiftChange((shift + 1) % 26)
+  }, "+")));
+}
+
+// === SECTION A ===
+function SectionA({
+  onComplete,
+  addLog,
+  showToast,
+  showWarn
+}) {
+  const [task, setTask] = useState('A1');
+  const [a1Shift, setA1Shift] = useState(0);
+  const [a1Done, setA1Done] = useState(false);
+  const [a2Shift, setA2Shift] = useState('');
+  const [a2Done, setA2Done] = useState(false);
+  const [a3Emperor, setA3Emperor] = useState('');
+  const [a3Cells, setA3Cells] = useState(['', '', '', '', '', '']);
+  const [a3Step, setA3Step] = useState(0);
+  const [a3Done, setA3Done] = useState(false);
+  const [a3Shake, setA3Shake] = useState(false);
+  const A1_CIPHER = 'DWWDFN DW GDZQ';
+  const A2_CIPHER = 'AYBZA UV VUL JOLJR LCLYF WHJRLA LUJYFWA LCLYFAOPUN';
+  const A2_PLAIN = 'TRUST NO ONE CHECK EVERY PACKET ENCRYPT EVERYTHING';
+  const A3_TARGET = 'JHLZHY';
+  const a1Decoded = caesarShift(A1_CIPHER, -a1Shift);
+  function submitA1() {
+    if (a1Shift === 3) {
+      setA1Done(true);
+      addLog('A1 decoded: ATTACK AT DAWN (shift = 3)', 'success');
+      showToast({
+        type: 'success',
+        title: 'PACKET ACCEPTED',
+        message: 'A1 cracked. Shift = 3. Decoded: ATTACK AT DAWN.'
+      });
+    } else {
+      addLog(`A1 attempt failed (shift = ${a1Shift})`, 'error');
+      showWarn({
+        title: 'ACCESS DENIED',
+        body: `Decryption with shift ${a1Shift} produced gibberish. The plaintext should read as English. Try a different shift on the wheel.`
+      });
+    }
+  }
+  const a2FreqCounts = useMemo(() => {
+    const c = {};
+    for (let i = 0; i < 26; i++) c[indexToLetter(i)] = 0;
+    A2_CIPHER.split('').forEach(ch => {
+      if (ch >= 'A' && ch <= 'Z') c[ch]++;
+    });
+    return c;
+  }, []);
+  const a2Max = Math.max(...Object.values(a2FreqCounts));
+  const a2TopLetter = Object.entries(a2FreqCounts).find(([k, v]) => v === a2Max)[0];
+  function submitA2() {
+    const n = parseInt(a2Shift, 10);
+    if (!Number.isFinite(n) || n < 0 || n > 25) {
+      showWarn({
+        title: 'INVALID SHIFT',
+        body: 'Enter a whole number between 0 and 25.'
+      });
+      return;
+    }
+    if (n === 7) {
+      setA2Done(true);
+      addLog('A2 cracked: shift = 7 → TRUST NO ONE...', 'success');
+      showToast({
+        type: 'success',
+        title: 'PACKET ACCEPTED',
+        message: 'Shift = 7 confirmed. Frequency analysis worked.'
+      });
+    } else {
+      addLog(`A2 wrong shift submitted: ${n}`, 'error');
+      showWarn({
+        title: 'ACCESS DENIED',
+        body: `Shift ${n} doesn't produce English. The most common cipher letter is L. L is the encryption of E. How many letters from E to L? That's the shift.`
+      });
+    }
+  }
+  function submitEmperor() {
+    if (a3Emperor.trim().toUpperCase() === 'CAESAR') {
+      setA3Step(1);
+      addLog("A3: emperor identified — CAESAR", 'success');
+      showToast({
+        type: 'success',
+        title: 'CORRECT',
+        message: 'Caesar — the Roman emperor who invented this cipher.'
+      });
+    } else {
+      setA3Shake(true);
+      setTimeout(() => setA3Shake(false), 500);
+      showWarn({
+        title: 'TRY AGAIN',
+        body: 'Who is this cipher named after? A famous Roman emperor used it in 58 BC.'
+      });
+    }
+  }
+  function setA3Cell(i, val) {
+    const v = (val || '').toUpperCase().replace(/[^A-Z]/g, '').slice(0, 1);
+    const next = a3Cells.slice();
+    next[i] = v;
+    setA3Cells(next);
+  }
+  function submitA3Encrypt() {
+    const built = a3Cells.join('');
+    if (built === A3_TARGET) {
+      setA3Done(true);
+      addLog(`A3: CAESAR encrypted with shift 7 → ${A3_TARGET}`, 'success');
+      showToast({
+        type: 'success',
+        title: 'CODEWORD CONFIRMED',
+        message: `Section A codeword: ${A3_TARGET}`
+      });
+      setTimeout(() => {
+        onComplete('A', A3_TARGET, {
+          sectionName: 'AUTHENTICATION LAYER',
+          calloutLabel: 'Codeword',
+          realWorld: "You just did what Alan Turing's team at Bletchley Park did in WW2 — they broke the Enigma machine using statistical frequency analysis, shortening the war by an estimated 2 years."
+        });
+      }, 800);
+    } else {
+      setA3Shake(true);
+      setTimeout(() => setA3Shake(false), 500);
+      addLog(`A3 attempt failed: ${built}`, 'error');
+      const correct = A3_TARGET.split('').filter((c, i) => a3Cells[i] === c).length;
+      showWarn({
+        title: 'INCORRECT CODEWORD',
+        body: `You have ${correct} of 6 letters right. Each letter is shifted forward by 7. C(2)+7=9→J. A(0)+7=7→H.`
+      });
+    }
+  }
+  return /*#__PURE__*/React.createElement("div", {
+    className: "max-w-7xl mx-auto px-4 pb-6"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex gap-2 mb-4"
+  }, [{
+    id: 'A1',
+    label: 'A1 · DECRYPT',
+    done: a1Done,
+    unlocked: true
+  }, {
+    id: 'A2',
+    label: 'A2 · FREQUENCY',
+    done: a2Done,
+    unlocked: a1Done
+  }, {
+    id: 'A3',
+    label: 'A3 · CODEWORD',
+    done: a3Done,
+    unlocked: a2Done
+  }].map(t => /*#__PURE__*/React.createElement("button", {
+    key: t.id,
+    disabled: !t.unlocked,
+    onClick: () => setTask(t.id),
+    className: `flex-1 px-3 py-2 rounded border-2 font-display font-bold tracking-widest text-xs sm:text-sm transition-all ${t.done ? 'border-termgreen text-termgreen bg-paperdark-2' : task === t.id ? 'border-astonorange bg-astondeep text-white' : !t.unlocked ? 'border-astondeep text-midgrey opacity-50 cursor-not-allowed bg-paperdark-2' : 'border-astonpink text-astonpink bg-paperdark-2 hover:bg-astondeep'}`
+  }, t.done ? '✓ ' : !t.unlocked ? '🔒 ' : '', t.label))), task === 'A1' && /*#__PURE__*/React.createElement("div", {
+    className: "card p-5 animate-fade-in"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "grid lg:grid-cols-2 gap-6 items-start"
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "text-astonorange font-display font-bold tracking-widest text-xs mb-2"
+  }, "TASK A1 · WARM-UP (~2 MIN)"), /*#__PURE__*/React.createElement("div", {
+    className: "text-white text-base mb-3"
+  }, "The Cipher Syndicate intercepted Roman military comms. Decode this message — it's a Caesar shift of 3."), /*#__PURE__*/React.createElement("div", {
+    className: "bg-black border-2 border-termgreen rounded p-3 mb-3"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-termgreen font-mono text-xs mb-1"
+  }, "> CIPHERTEXT"), /*#__PURE__*/React.createElement("div", {
+    className: "font-mono text-2xl text-termgreen tracking-widest"
+  }, A1_CIPHER)), /*#__PURE__*/React.createElement("div", {
+    className: "bg-paperdark-2 border-l-4 border-astonorange p-3 mb-3"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-astonorange font-display font-bold tracking-widest text-xs mb-1"
+  }, "▶ LIVE DECODE (your wheel setting)"), /*#__PURE__*/React.createElement("div", {
+    className: "font-mono text-xl text-white tracking-widest"
+  }, a1Decoded)), /*#__PURE__*/React.createElement("button", {
+    className: "btn-primary",
+    disabled: a1Done,
+    onClick: submitA1
+  }, a1Done ? '✓ DECRYPTED' : 'CONFIRM DECRYPTION'), a1Done && /*#__PURE__*/React.createElement("button", {
+    className: "btn-pink ml-3",
+    onClick: () => setTask('A2')
+  }, "NEXT: A2 ▶"), /*#__PURE__*/React.createElement(HintLadder, {
+    taskId: "A1",
+    hints: ['A Caesar shift of 3 means each letter has moved 3 places forward. To decode, move each letter 3 places BACK.', 'Try aligning the wheel so the inner letter D points to plaintext A. That\'s a shift of 3.', 'The decoded message is "ATTACK AT DAWN".']
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "flex justify-center"
+  }, /*#__PURE__*/React.createElement(CaesarWheel, {
+    shift: a1Shift,
+    onShiftChange: setA1Shift,
+    size: 280
+  })))), task === 'A2' && /*#__PURE__*/React.createElement("div", {
+    className: "card p-5 animate-fade-in"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-astonorange font-display font-bold tracking-widest text-xs mb-2"
+  }, "TASK A2 · FREQUENCY ANALYSIS (~5 MIN)"), /*#__PURE__*/React.createElement("div", {
+    className: "text-white text-base mb-3"
+  }, "A new intercept — the Syndicate didn't tell us the shift. Crack it using letter frequencies."), /*#__PURE__*/React.createElement("div", {
+    className: "bg-black border-2 border-termgreen rounded p-3 mb-3 overflow-x-auto"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-termgreen font-mono text-xs mb-1"
+  }, "> CIPHERTEXT"), /*#__PURE__*/React.createElement("div", {
+    className: "font-mono text-base sm:text-xl text-termgreen tracking-wider whitespace-nowrap"
+  }, A2_CIPHER)), /*#__PURE__*/React.createElement("div", {
+    className: "mb-4"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-astonpink font-display font-bold tracking-widest text-xs mb-2"
+  }, "▶ FREQUENCY ANALYSIS — bar height shows how many times each letter appears"), /*#__PURE__*/React.createElement("div", {
+    className: "flex items-end gap-1",
+    style: {
+      height: '130px'
+    }
+  }, Array.from({
+    length: 26
+  }, (_, i) => {
+    const L = indexToLetter(i);
+    const v = a2FreqCounts[L] || 0;
+    const isTop = v === a2Max && v > 0;
+    const h = a2Max > 0 ? v / a2Max * 100 : 0;
+    return /*#__PURE__*/React.createElement("div", {
+      key: i,
+      className: "flex-1 flex flex-col items-center",
+      style: {
+        minWidth: '10px'
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      className: `text-xs font-mono mb-0.5 ${isTop ? 'text-astonorange font-bold' : 'text-midgrey'}`
+    }, v || ''), /*#__PURE__*/React.createElement("div", {
+      className: `w-full ${isTop ? 'bg-astonorange animate-pulse-orange' : 'bg-astondeep'} rounded-t`,
+      style: {
+        height: `${h}%`
+      }
+    }), /*#__PURE__*/React.createElement("div", {
+      className: `text-xs font-mono mt-1 ${isTop ? 'text-astonorange font-bold' : 'text-offwhite'}`
+    }, L));
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "bg-paperdark-2 border-l-4 border-astonpink p-3 mb-3"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-astonpink font-display font-bold tracking-widest text-xs mb-1"
+  }, "FREQUENCY HINT"), /*#__PURE__*/React.createElement("div", {
+    className: "text-offwhite text-sm"
+  }, "The most common letter is ", /*#__PURE__*/React.createElement("strong", {
+    className: "text-astonorange"
+  }, a2TopLetter), ". In typical English the most common is ", /*#__PURE__*/React.createElement("strong", {
+    className: "text-astonorange"
+  }, "E"), ". So ", /*#__PURE__*/React.createElement("strong", {
+    className: "text-astonorange"
+  }, a2TopLetter), " probably encrypts E. How many positions is that shift?")), /*#__PURE__*/React.createElement("div", {
+    className: "flex flex-wrap items-center gap-3 mb-3"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "text-white font-display tracking-widest text-sm"
+  }, "SHIFT ="), /*#__PURE__*/React.createElement("input", {
+    type: "number",
+    min: 0,
+    max: 25,
+    className: "input-cyber w-24 text-center",
+    value: a2Shift,
+    onChange: e => setA2Shift(e.target.value)
+  }), /*#__PURE__*/React.createElement("button", {
+    className: "btn-primary",
+    disabled: a2Done,
+    onClick: submitA2
+  }, a2Done ? '✓ CONFIRMED' : 'TEST SHIFT'), a2Done && /*#__PURE__*/React.createElement("button", {
+    className: "btn-pink",
+    onClick: () => setTask('A3')
+  }, "NEXT: A3 ▶")), a2Done && /*#__PURE__*/React.createElement("div", {
+    className: "bg-paperdark border-2 border-termgreen rounded p-3 animate-slide-up"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-termgreen font-mono text-xs mb-1"
+  }, "> DECODED MESSAGE"), /*#__PURE__*/React.createElement("div", {
+    className: "font-mono text-base sm:text-lg text-white tracking-wider"
+  }, A2_PLAIN)), /*#__PURE__*/React.createElement(HintLadder, {
+    taskId: "A2",
+    hints: ['Count: how many positions are between E and ' + a2TopLetter + ' in the alphabet?', 'E is letter 4. ' + a2TopLetter + ' is letter ' + letterToIndex(a2TopLetter) + '. The difference is 7.', 'Try shift = 7.']
+  })), task === 'A3' && /*#__PURE__*/React.createElement("div", {
+    className: "card p-5 animate-fade-in"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-astonorange font-display font-bold tracking-widest text-xs mb-2"
+  }, "TASK A3 · ENCRYPT THE CODEWORD (~2 MIN)"), /*#__PURE__*/React.createElement("div", {
+    className: "text-white text-base mb-3"
+  }, "The message you decoded is the Syndicate's motto. ", /*#__PURE__*/React.createElement("strong", null, "Find the Roman emperor who invented this cipher."), " Then encrypt his name with shift 7 to use as your team's authentication codeword."), /*#__PURE__*/React.createElement("div", {
+    className: "mb-4"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-astonpink font-display font-bold tracking-widest text-xs mb-2"
+  }, "STEP 1 · NAME THE EMPEROR"), /*#__PURE__*/React.createElement("div", {
+    className: "flex flex-wrap gap-2 items-center"
+  }, /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    maxLength: 10,
+    className: `input-cyber w-44 ${a3Shake && a3Step === 0 ? 'animate-shake' : ''}`,
+    placeholder: "EMPEROR'S NAME",
+    value: a3Emperor,
+    disabled: a3Step >= 1,
+    onChange: e => setA3Emperor(e.target.value.toUpperCase())
+  }), /*#__PURE__*/React.createElement("button", {
+    className: "btn-primary",
+    disabled: a3Step >= 1,
+    onClick: submitEmperor
+  }, a3Step >= 1 ? '✓ CONFIRMED' : 'CONFIRM'))), a3Step >= 1 && /*#__PURE__*/React.createElement("div", {
+    className: "animate-slide-up"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-astonpink font-display font-bold tracking-widest text-xs mb-2"
+  }, "STEP 2 · ENCRYPT CAESAR WITH SHIFT 7"), /*#__PURE__*/React.createElement("div", {
+    className: "bg-paperdark border border-astondeep rounded p-3 mb-3"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-midgrey text-xs mb-2 font-mono"
+  }, "Each letter advances 7 positions. C(2)+7=9→J. Fill in the rest."), /*#__PURE__*/React.createElement("div", {
+    className: `flex flex-wrap items-center gap-3 ${a3Shake && a3Step >= 1 ? 'animate-shake' : ''}`
+  }, ['C', 'A', 'E', 'S', 'A', 'R'].map((plain, i) => /*#__PURE__*/React.createElement("div", {
+    key: i,
+    className: "flex flex-col items-center"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "font-mono text-white text-2xl border-b-2 border-astonorange w-10 text-center"
+  }, plain), /*#__PURE__*/React.createElement("div", {
+    className: "text-astonorange font-display text-xs my-1"
+  }, "↓ +7"), /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    maxLength: 1,
+    className: `input-cyber w-12 text-center text-xl ${a3Cells[i] && (a3Cells[i] === A3_TARGET[i] ? 'correct' : 'wrong')}`,
+    value: a3Cells[i],
+    onChange: e => setA3Cell(i, e.target.value),
+    disabled: a3Done
+  }))))), /*#__PURE__*/React.createElement("div", {
+    className: "flex flex-wrap items-center gap-3"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn-primary",
+    disabled: a3Done,
+    onClick: submitA3Encrypt
+  }, a3Done ? '✓ CODEWORD CONFIRMED' : 'SUBMIT CODEWORD'), !a3Done && /*#__PURE__*/React.createElement("button", {
+    className: "btn-ghost",
+    onClick: () => setA3Cells(['', '', '', '', '', ''])
+  }, "RESET")), /*#__PURE__*/React.createElement(HintLadder, {
+    taskId: "A3",
+    hints: ["Each letter of CAESAR moves 7 positions forward. C → J, A → H.", "If the new position is past Z (25), wrap around. A=0, Z=25. So R(17)+7 = 24 → Y.", "The codeword is JHLZHY."]
+  }))));
+}
+
+// === SECTION B ===
+function SectionB({
+  onComplete,
+  addLog,
+  showToast,
+  showWarn
+}) {
+  const SERVERS = [{
+    id: 'S1',
+    bin: '11001011',
+    dec: 203,
+    prime: false,
+    factor: '7 × 29'
+  }, {
+    id: 'S2',
+    bin: '10010100',
+    dec: 148,
+    prime: false,
+    factor: '2² × 37'
+  }, {
+    id: 'S3',
+    bin: '10001001',
+    dec: 137,
+    prime: true,
+    factor: 'PRIME'
+  }, {
+    id: 'S4',
+    bin: '11110110',
+    dec: 246,
+    prime: false,
+    factor: '2 × 3 × 41'
+  }, {
+    id: 'S5',
+    bin: '01011010',
+    dec: 90,
+    prime: false,
+    factor: '2 × 3² × 5'
+  }, {
+    id: 'S6',
+    bin: '10111100',
+    dec: 188,
+    prime: false,
+    factor: '2² × 47'
+  }, {
+    id: 'S7',
+    bin: '01100011',
+    dec: 99,
+    prime: false,
+    factor: '3² × 11'
+  }, {
+    id: 'S8',
+    bin: '11010001',
+    dec: 209,
+    prime: false,
+    factor: '11 × 19'
+  }];
+  const [tested, setTested] = useState({});
+  const [intruderPick, setIntruderPick] = useState(null);
+  const [done, setDone] = useState(false);
+  function testServer(s) {
+    if (tested[s.id]) return;
+    setTested({
+      ...tested,
+      [s.id]: true
+    });
+    if (s.prime) {
+      addLog(`B: tested ${s.id} (${s.dec}) → PRIME ★`, 'success');
+      showToast({
+        type: 'success',
+        title: 'PRIMALITY CONFIRMED',
+        message: `${s.id} = ${s.dec} is prime. Hacker signatures are often prime — flag this.`
+      });
+    } else {
+      addLog(`B: tested ${s.id} (${s.dec}) → not prime (${s.factor})`, 'info');
+    }
+  }
+  const testedCount = Object.keys(tested).length;
+  const allTested = testedCount === 8;
+  function pickIntruder(s) {
+    if (!allTested) {
+      showWarn({
+        title: 'DATA INCOMPLETE',
+        body: `Test all 8 servers before identifying the intruder. ${testedCount}/8 tested.`
+      });
+      return;
+    }
+    setIntruderPick(s.id);
+    if (s.prime) {
+      addLog(`B: intruder identified — ${s.id} (${s.dec}) blocked`, 'success');
+      showToast({
+        type: 'success',
+        title: 'INTRUDER ISOLATED',
+        message: `${s.id} (IP ending ${s.dec}) blocked by firewall.`
+      });
+      setDone(true);
+      setTimeout(() => {
+        onComplete('B', `${s.id} (${s.dec})`, {
+          sectionName: 'THE FIREWALL',
+          calloutLabel: 'Intruder ID',
+          realWorld: 'This is the daily work of every Security Operations Centre. They look at raw network traffic and use mathematical fingerprints to spot what doesn\'t belong — exactly the technique that could have stopped WannaCry.'
+        });
+      }, 900);
+    } else {
+      addLog(`B: wrong intruder pick — ${s.id} is not prime`, 'error');
+      showWarn({
+        title: 'WRONG TARGET',
+        body: `${s.id} = ${s.dec} is not prime (${s.factor}). The Cipher Syndicate uses a prime as its IP signature.`
+      });
+    }
+  }
+  return /*#__PURE__*/React.createElement("div", {
+    className: "max-w-7xl mx-auto px-4 pb-6"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "card p-5"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-astonorange font-display font-bold tracking-widest text-xs mb-2"
+  }, "TASK B · FIND THE INTRUDER (~10 MIN)"), /*#__PURE__*/React.createElement("div", {
+    className: "text-white text-base mb-3"
+  }, "The Cipher Syndicate uses a ", /*#__PURE__*/React.createElement("strong", null, "prime number"), " as its last IP octet. Test each server's binary IP. ", /*#__PURE__*/React.createElement("strong", {
+    className: "text-astonorange"
+  }, "Exactly one will be prime.")), /*#__PURE__*/React.createElement("div", {
+    className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-4"
+  }, SERVERS.map(s => {
+    const t = tested[s.id];
+    const isPicked = intruderPick === s.id;
+    return /*#__PURE__*/React.createElement("div", {
+      key: s.id,
+      className: `server-card ${t ? 'tested' : ''} ${t && s.prime ? 'prime' : ''} ${isPicked && s.prime ? 'selected-intruder' : ''}`
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "flex items-center justify-between mb-2"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "font-display font-black text-white text-xl"
+    }, s.id), t && (s.prime ? /*#__PURE__*/React.createElement("span", {
+      className: "text-termgreen text-xs font-display font-bold tracking-widest"
+    }, "★ PRIME") : /*#__PURE__*/React.createElement("span", {
+      className: "text-midgrey text-xs font-mono"
+    }, "composite"))), /*#__PURE__*/React.createElement("div", {
+      className: "font-mono text-termgreen text-lg tracking-widest mb-1"
+    }, s.bin.slice(0, 4), " ", s.bin.slice(4)), /*#__PURE__*/React.createElement("div", {
+      className: "font-mono text-white text-sm mb-2"
+    }, "= ", /*#__PURE__*/React.createElement("strong", null, s.dec)), !t ? /*#__PURE__*/React.createElement("button", {
+      className: "btn-ghost w-full text-xs py-1.5",
+      onClick: () => testServer(s)
+    }, "TEST PRIMALITY") : /*#__PURE__*/React.createElement("div", {
+      className: "text-xs"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "font-mono text-midgrey"
+    }, s.factor === 'PRIME' ? 'no divisors ≤ 13' : 'factors: ' + s.factor), /*#__PURE__*/React.createElement("button", {
+      onClick: () => pickIntruder(s),
+      disabled: done,
+      className: `mt-2 w-full text-xs font-display font-bold tracking-widest py-1.5 rounded border-2 transition-all ${isPicked && s.prime ? 'border-warnred bg-warnred text-white' : isPicked && !s.prime ? 'border-warnred text-warnred opacity-50' : 'border-astonpink text-astonpink hover:bg-astondeep'}`
+    }, isPicked && s.prime ? '⚠ INTRUDER' : 'FLAG AS INTRUDER')));
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "bg-paperdark-2 border-l-4 border-astonpink p-3 mb-3"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-astonpink font-display font-bold tracking-widest text-xs mb-1"
+  }, "PRIMALITY REMINDER"), /*#__PURE__*/React.createElement("div", {
+    className: "text-offwhite text-sm"
+  }, "All values ≤ 256. Since √256 = 16, you only need to test divisibility by ", /*#__PURE__*/React.createElement("strong", {
+    className: "font-mono"
+  }, "2, 3, 5, 7, 11, 13"), ".")), /*#__PURE__*/React.createElement("div", {
+    className: "text-center text-midgrey text-xs font-mono mb-2"
+  }, testedCount, "/8 SERVERS TESTED · ", done ? 'INTRUDER NEUTRALISED' : 'INTRUDER NOT YET IDENTIFIED'), /*#__PURE__*/React.createElement(HintLadder, {
+    taskId: "B",
+    hints: ['For each binary value, add place values where there is a 1. 1100 1011 = 128+64+8+2+1 = 203.', 'A prime number has no divisors except 1 and itself. 203 = 7 × 29, so 203 is not prime.', '137 is the only prime — not divisible by 2, 3, 5, 7, or 11. So S3 (binary 1000 1001) is the Cipher Syndicate.']
+  })));
+}
+
+// === SECTION C ===
+function SectionC({
+  onComplete,
+  addLog,
+  showToast,
+  showWarn
+}) {
+  const [task, setTask] = useState('C1');
+  const PRESET = {
+    0: 'H',
+    12: 'R',
+    25: 'E'
+  };
+  const [hashAns, setHashAns] = useState(() => {
+    const arr = Array(26).fill('');
+    Object.entries(PRESET).forEach(([k, v]) => {
+      arr[parseInt(k, 10)] = v;
+    });
+    return arr;
+  });
+  const [hashCorrect, setHashCorrect] = useState(() => {
+    const arr = Array(26).fill(null);
+    Object.keys(PRESET).forEach(k => {
+      arr[parseInt(k, 10)] = true;
+    });
+    return arr;
+  });
+  function setHashCell(i, val) {
+    if (PRESET.hasOwnProperty(i)) return;
+    const v = (val || '').toUpperCase().replace(/[^A-Z]/g, '').slice(0, 1);
+    const expected = hashFn(indexToLetter(i));
+    const arr = hashAns.slice();
+    arr[i] = v;
+    setHashAns(arr);
+    const cr = hashCorrect.slice();
+    cr[i] = v === '' ? null : v === expected;
+    setHashCorrect(cr);
+  }
+  const c1Complete = hashCorrect.every(x => x === true);
+  function checkC1() {
+    if (c1Complete) {
+      addLog('C1: master hash table built correctly', 'success');
+      showToast({
+        type: 'success',
+        title: 'TABLE LOCKED IN',
+        message: 'You now have the master hash key for all 26 letters.'
+      });
+      setTask('C2');
+    } else {
+      const wrong = hashCorrect.map((c, i) => c === false ? indexToLetter(i) : null).filter(Boolean);
+      const blank = hashCorrect.map((c, i) => c === null ? indexToLetter(i) : null).filter(Boolean);
+      showWarn({
+        title: 'TABLE INCOMPLETE',
+        body: `${wrong.length > 0 ? wrong.length + ' incorrect: ' + wrong.join(', ') + '. ' : ''}${blank.length > 0 ? blank.length + ' blank: ' + blank.join(', ') + '. ' : ''}Use h(x) = (3x + 7) mod 26.`
+      });
+    }
+  }
+  const SECURE_HASH = 'JTNPGT';
+  const [c2Cells, setC2Cells] = useState(['', '', '', '', '', '']);
+  const [c2Done, setC2Done] = useState(false);
+  const [c2Shake, setC2Shake] = useState(false);
+  function setC2Cell(i, val) {
+    const v = (val || '').toUpperCase().replace(/[^A-Z]/g, '').slice(0, 1);
+    const arr = c2Cells.slice();
+    arr[i] = v;
+    setC2Cells(arr);
+  }
+  function submitC2() {
+    const built = c2Cells.join('');
+    if (built === SECURE_HASH) {
+      setC2Done(true);
+      addLog(`C2: SECURE hashed to ${SECURE_HASH}`, 'success');
+      showToast({
+        type: 'success',
+        title: 'HASH VERIFIED',
+        message: `SECURE → ${SECURE_HASH}.`
+      });
+    } else {
+      setC2Shake(true);
+      setTimeout(() => setC2Shake(false), 500);
+      showWarn({
+        title: 'HASH MISMATCH',
+        body: `Not right. Apply h(x) to each letter of SECURE using your C1 master table.`
+      });
+    }
+  }
+  const CRACK_CIPHER = 'MGXIHU';
+  const CRACK_PLAIN = 'TROJAN';
+  const [c3Cells, setC3Cells] = useState(['', '', '', '', '', '']);
+  const [c3Done, setC3Done] = useState(false);
+  const [c3Shake, setC3Shake] = useState(false);
+  function setC3Cell(i, val) {
+    const v = (val || '').toUpperCase().replace(/[^A-Z]/g, '').slice(0, 1);
+    const arr = c3Cells.slice();
+    arr[i] = v;
+    setC3Cells(arr);
+  }
+  function submitC3() {
+    const built = c3Cells.join('');
+    if (built === CRACK_PLAIN) {
+      setC3Done(true);
+      addLog(`C3: cracked MGXIHU → TROJAN`, 'success');
+      showToast({
+        type: 'success',
+        title: 'PASSWORD RECOVERED',
+        message: 'TROJAN — named after the Trojan Horse.'
+      });
+      setTimeout(() => {
+        onComplete('C', 'TROJAN', {
+          sectionName: 'THE HASH FUNCTION',
+          calloutLabel: 'Stolen password',
+          realWorld: 'You worked with a function whose inverse exists because the maths is too simple. Real hashes like SHA-256 cannot be reversed — but LinkedIn used unsalted SHA-1, and within days hackers had cracked 90% of 117 million stolen passwords.'
+        });
+      }, 900);
+    } else {
+      setC3Shake(true);
+      setTimeout(() => setC3Shake(false), 500);
+      showWarn({
+        title: 'INVALID PASSWORD',
+        body: `Work backwards: for each cipher letter, find which plain letter hashes to it in your C1 table.`
+      });
+    }
+  }
+  return /*#__PURE__*/React.createElement("div", {
+    className: "max-w-7xl mx-auto px-4 pb-6"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "bg-black border-2 border-termgreen rounded p-3 mb-4 text-center"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-astonpink font-display font-bold tracking-widest text-xs mb-1"
+  }, "▶ THE SYNDICATE'S HASH FUNCTION"), /*#__PURE__*/React.createElement("div", {
+    className: "font-mono text-xl sm:text-2xl text-termgreen tracking-wider"
+  }, "h(x) = (3x + 7) mod 26 \xA0\xA0 ", /*#__PURE__*/React.createElement("span", {
+    className: "text-midgrey text-base"
+  }, "(A = 0, B = 1, ..., Z = 25)"))), /*#__PURE__*/React.createElement("div", {
+    className: "flex gap-2 mb-4"
+  }, [{
+    id: 'C1',
+    label: 'C1 · BUILD TABLE',
+    done: c1Complete,
+    unlocked: true
+  }, {
+    id: 'C2',
+    label: 'C2 · ENCRYPT SECURE',
+    done: c2Done,
+    unlocked: c1Complete
+  }, {
+    id: 'C3',
+    label: 'C3 · CRACK HASH',
+    done: c3Done,
+    unlocked: c2Done
+  }].map(t => /*#__PURE__*/React.createElement("button", {
+    key: t.id,
+    disabled: !t.unlocked,
+    onClick: () => setTask(t.id),
+    className: `flex-1 px-3 py-2 rounded border-2 font-display font-bold tracking-widest text-xs sm:text-sm transition-all ${t.done ? 'border-termgreen text-termgreen bg-paperdark-2' : task === t.id ? 'border-astonorange bg-astondeep text-white' : !t.unlocked ? 'border-astondeep text-midgrey opacity-50 cursor-not-allowed bg-paperdark-2' : 'border-astonpink text-astonpink bg-paperdark-2 hover:bg-astondeep'}`
+  }, t.done ? '✓ ' : !t.unlocked ? '🔒 ' : '', t.label))), task === 'C1' && /*#__PURE__*/React.createElement("div", {
+    className: "card p-5 animate-fade-in"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-astonorange font-display font-bold tracking-widest text-xs mb-2"
+  }, "TASK C1 · BUILD THE MASTER HASH TABLE (~4 MIN)"), /*#__PURE__*/React.createElement("div", {
+    className: "text-white text-sm mb-3"
+  }, "Compute h(x) for every letter. ", /*#__PURE__*/React.createElement("strong", null, "A, M, Z are pre-filled as examples.")), /*#__PURE__*/React.createElement("div", {
+    className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-1 mb-4"
+  }, Array.from({
+    length: 26
+  }, (_, i) => {
+    const isPreset = PRESET.hasOwnProperty(i);
+    const v = hashAns[i];
+    const correct = hashCorrect[i];
+    return /*#__PURE__*/React.createElement("div", {
+      key: i,
+      className: "hash-row"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "letter"
+    }, indexToLetter(i)), /*#__PURE__*/React.createElement("span", {
+      className: "formula"
+    }, "x=", i), /*#__PURE__*/React.createElement("span", {
+      className: "arrow"
+    }, "→"), /*#__PURE__*/React.createElement("input", {
+      type: "text",
+      maxLength: 1,
+      className: `input-cyber w-12 h-9 text-center text-base ${correct === true ? 'correct' : correct === false ? 'wrong' : ''} ${isPreset ? 'opacity-80' : ''}`,
+      value: v,
+      readOnly: isPreset,
+      onChange: e => setHashCell(i, e.target.value)
+    }));
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "text-midgrey text-xs font-mono mb-3"
+  }, "Hint: ", /*#__PURE__*/React.createElement("strong", {
+    className: "text-astonorange"
+  }, "h(x) = (3 × x + 7) mod 26"), ". Example: h(2) = (6+7) mod 26 = 13 → N."), /*#__PURE__*/React.createElement("button", {
+    className: "btn-primary",
+    onClick: checkC1
+  }, c1Complete ? '▶ CONTINUE TO C2' : 'CHECK TABLE'), /*#__PURE__*/React.createElement(HintLadder, {
+    taskId: "C1",
+    hints: ['For each letter, multiply position by 3, add 7, then take mod 26. For B: 3×1+7 = 10 → K.', 'If the result is ≥ 26, subtract 26. T is x=19, 3(19)+7 = 64 → 64−26=38 → 38−26=12 → M.', 'Compute systematically. A→H, B→K, C→N, D→Q, E→T, F→W, G→Z, H→C, I→F, J→I, K→L, L→O.']
+  })), task === 'C2' && /*#__PURE__*/React.createElement("div", {
+    className: "card p-5 animate-fade-in"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-astonorange font-display font-bold tracking-widest text-xs mb-2"
+  }, "TASK C2 · ENCRYPT \"SECURE\" (~3 MIN)"), /*#__PURE__*/React.createElement("div", {
+    className: "text-white text-sm mb-3"
+  }, "Use your master table to hash each letter of SECURE."), /*#__PURE__*/React.createElement("div", {
+    className: `flex flex-wrap items-center gap-3 mb-4 ${c2Shake ? 'animate-shake' : ''}`
+  }, 'SECURE'.split('').map((p, i) => /*#__PURE__*/React.createElement("div", {
+    key: i,
+    className: "flex flex-col items-center"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "font-mono text-white text-2xl border-b-2 border-astonorange w-10 text-center"
+  }, p), /*#__PURE__*/React.createElement("div", {
+    className: "text-astonorange font-display text-xs my-1"
+  }, "↓ h(x)"), /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    maxLength: 1,
+    className: `input-cyber w-12 text-center text-xl ${c2Cells[i] && (c2Cells[i] === SECURE_HASH[i] ? 'correct' : 'wrong')}`,
+    value: c2Cells[i],
+    disabled: c2Done,
+    onChange: e => setC2Cell(i, e.target.value)
+  })))), /*#__PURE__*/React.createElement("div", {
+    className: "flex gap-3"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn-primary",
+    disabled: c2Done,
+    onClick: submitC2
+  }, c2Done ? '✓ VERIFIED' : 'SUBMIT'), !c2Done && /*#__PURE__*/React.createElement("button", {
+    className: "btn-ghost",
+    onClick: () => setC2Cells(['', '', '', '', '', ''])
+  }, "RESET"), c2Done && /*#__PURE__*/React.createElement("button", {
+    className: "btn-pink",
+    onClick: () => setTask('C3')
+  }, "NEXT: C3 ▶")), /*#__PURE__*/React.createElement(HintLadder, {
+    taskId: "C2",
+    hints: ['S is x=18. h(18) = (54+7) mod 26 = 61 mod 26 = 9 → J.', 'Use your C1 master table — read off each hash for S, E, C, U, R, E.', 'SECURE → JTNPGT. Note E appears twice, both become T.']
+  })), task === 'C3' && /*#__PURE__*/React.createElement("div", {
+    className: "card p-5 animate-fade-in"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-astonorange font-display font-bold tracking-widest text-xs mb-2"
+  }, "TASK C3 · CRACK THE PASSWORD (~5 MIN)"), /*#__PURE__*/React.createElement("div", {
+    className: "text-white text-sm mb-3"
+  }, "The Cipher Syndicate's stolen hash is ", /*#__PURE__*/React.createElement("strong", {
+    className: "font-mono text-termgreen"
+  }, "MGXIHU"), ". Reverse it."), /*#__PURE__*/React.createElement("div", {
+    className: "bg-black border-2 border-termgreen rounded p-3 mb-3"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-termgreen font-mono text-xs mb-1"
+  }, "> CIPHERTEXT"), /*#__PURE__*/React.createElement("div", {
+    className: "font-mono text-2xl text-termgreen tracking-widest"
+  }, CRACK_CIPHER)), /*#__PURE__*/React.createElement("div", {
+    className: `flex flex-wrap items-center gap-3 mb-4 ${c3Shake ? 'animate-shake' : ''}`
+  }, CRACK_CIPHER.split('').map((c, i) => /*#__PURE__*/React.createElement("div", {
+    key: i,
+    className: "flex flex-col items-center"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "font-mono text-termgreen text-2xl border-b-2 border-termgreen w-10 text-center"
+  }, c), /*#__PURE__*/React.createElement("div", {
+    className: "text-astonpink font-display text-xs my-1"
+  }, "↑ h⁻¹"), /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    maxLength: 1,
+    className: `input-cyber w-12 text-center text-xl ${c3Cells[i] && (c3Cells[i] === CRACK_PLAIN[i] ? 'correct' : 'wrong')}`,
+    value: c3Cells[i],
+    disabled: c3Done,
+    onChange: e => setC3Cell(i, e.target.value)
+  })))), /*#__PURE__*/React.createElement("div", {
+    className: "flex gap-3 mb-3"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn-primary",
+    disabled: c3Done,
+    onClick: submitC3
+  }, c3Done ? '✓ CRACKED' : 'SUBMIT'), !c3Done && /*#__PURE__*/React.createElement("button", {
+    className: "btn-ghost",
+    onClick: () => setC3Cells(['', '', '', '', '', ''])
+  }, "RESET")), /*#__PURE__*/React.createElement("div", {
+    className: "bg-paperdark-2 border-l-4 border-astonpink p-3"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-astonpink font-display font-bold tracking-widest text-xs mb-1"
+  }, "BONUS — THE INVERSE FORMULA"), /*#__PURE__*/React.createElement("div", {
+    className: "text-offwhite text-sm"
+  }, "If h(x) = (3x + 7) mod 26, then ", /*#__PURE__*/React.createElement("strong", {
+    className: "font-mono text-termgreen"
+  }, "h⁻¹(y) = 9(y − 7) mod 26"), ", because 3 × 9 = 27 ≡ 1 (mod 26).")), /*#__PURE__*/React.createElement(HintLadder, {
+    taskId: "C3",
+    hints: ['Read your C1 table backwards — which plain letter has h(x) = M? Find M in the right column.', 'Or compute: h⁻¹(y) = 9(y−7) mod 26. For M (y=12): 9(12−7) = 45 mod 26 = 19 → T.', 'The password is TROJAN.']
+  })));
+}
+
+// === SECTION D ===
+function SectionD({
+  onComplete,
+  addLog,
+  showToast,
+  showWarn
+}) {
+  const [task, setTask] = useState('D1');
+  const D1_TARGETS = [{
+    n: 91,
+    primes: [7, 13],
+    phi: 72
+  }, {
+    n: 187,
+    primes: [11, 17],
+    phi: 160
+  }, {
+    n: 437,
+    primes: [19, 23],
+    phi: 396
+  }];
+  const PRIME_LIST_D1 = [2, 3, 5, 7, 11, 13, 17, 19, 23];
+  const [d1Selected, setD1Selected] = useState({
+    91: [],
+    187: [],
+    437: []
+  });
+  const [d1Done, setD1Done] = useState({
+    91: false,
+    187: false,
+    437: false
+  });
+  const d1AllDone = Object.values(d1Done).every(Boolean);
+  function clickPrimeForN(n, p) {
+    if (d1Done[n]) return;
+    const cur = d1Selected[n].slice();
+    if (cur.includes(p)) {
+      const next = cur.filter(x => x !== p);
+      setD1Selected({
+        ...d1Selected,
+        [n]: next
+      });
+      return;
+    }
+    if (cur.length >= 2) {
+      showWarn({
+        title: 'TWO PRIMES ONLY',
+        body: `You already picked two primes for n=${n}. Tap one to remove it first.`
+      });
+      return;
+    }
+    const next = [...cur, p];
+    setD1Selected({
+      ...d1Selected,
+      [n]: next
+    });
+    if (next.length === 2) {
+      const product = next[0] * next[1];
+      if (product === n) {
+        setD1Done({
+          ...d1Done,
+          [n]: true
+        });
+        const phi = (next[0] - 1) * (next[1] - 1);
+        addLog(`D1: ${n} = ${next[0]} × ${next[1]} ✓ (φ = ${phi})`, 'success');
+        showToast({
+          type: 'success',
+          title: `${n} CRACKED`,
+          message: `${n} = ${next[0]} × ${next[1]}, φ = ${phi}.`
+        });
+      } else {
+        showWarn({
+          title: 'WRONG PAIR',
+          body: `${next[0]} × ${next[1]} = ${product}, not ${n}. Tap a prime to deselect and try again.`
+        });
+      }
+    }
+  }
+  const D3_N = 1517;
+  const D3_PRIMES = [37, 41, 43, 47, 53, 59, 61, 67, 71, 73];
+  const D3_TRUE = [37, 41];
+  const [d3Tested, setD3Tested] = useState({});
+  const [d3FoundFactors, setD3FoundFactors] = useState([]);
+  const [d3PhiInput, setD3PhiInput] = useState('');
+  const [d3Done, setD3Done] = useState(false);
+  function testD3Prime(p) {
+    if (d3Tested[p]) return;
+    const q = D3_N / p;
+    const isFactor = Number.isInteger(q);
+    setD3Tested({
+      ...d3Tested,
+      [p]: isFactor ? `= ${q} ✓` : `= ${q.toFixed(2)} ✗`
+    });
+    if (isFactor) {
+      const found = Array.from(new Set([...d3FoundFactors, p, q]));
+      setD3FoundFactors(found);
+      addLog(`D3: ${D3_N} ÷ ${p} = ${q} — factor found`, 'success');
+      showToast({
+        type: 'success',
+        title: 'FACTOR FOUND',
+        message: `${D3_N} = ${p} × ${q}.`
+      });
+    } else {
+      addLog(`D3: ${D3_N} ÷ ${p} = ${q.toFixed(2)} — not a factor`, 'info');
+    }
+  }
+  function submitPhi() {
+    const n = parseInt(d3PhiInput, 10);
+    if (n === 1440) {
+      setD3Done(true);
+      addLog('D3: φ(1517) = 1440 ✓', 'success');
+      showToast({
+        type: 'success',
+        title: 'MASTER KEY DECODED',
+        message: 'φ(1517) = 36 × 40 = 1440.'
+      });
+      setTimeout(() => {
+        onComplete('D', `1517 = 37 × 41, φ = 1440`, {
+          sectionName: 'THE PRIME VAULT',
+          calloutLabel: 'Master key',
+          realWorld: "You attacked RSA — invented in 1977 by Rivest, Shamir and Adleman. RSA secures HTTPS, online banking, and every encrypted email. Its strength is the difficulty of factoring huge semi-primes."
+        });
+      }, 900);
+    } else {
+      showWarn({
+        title: 'WRONG TOTIENT',
+        body: `φ(n) = (p − 1)(q − 1). You have p = 37, q = 41. Compute (37 − 1)(41 − 1).`
+      });
+    }
+  }
+  return /*#__PURE__*/React.createElement("div", {
+    className: "max-w-7xl mx-auto px-4 pb-6"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex gap-2 mb-4"
+  }, [{
+    id: 'D1',
+    label: 'D1 · WARM-UP',
+    done: d1AllDone,
+    unlocked: true
+  }, {
+    id: 'D2',
+    label: 'D2 · WHY IT WORKS',
+    done: false,
+    unlocked: d1AllDone
+  }, {
+    id: 'D3',
+    label: 'D3 · BOSS KEY',
+    done: d3Done,
+    unlocked: d1AllDone
+  }].map(t => /*#__PURE__*/React.createElement("button", {
+    key: t.id,
+    disabled: !t.unlocked,
+    onClick: () => setTask(t.id),
+    className: `flex-1 px-3 py-2 rounded border-2 font-display font-bold tracking-widest text-xs sm:text-sm transition-all ${t.done ? 'border-termgreen text-termgreen bg-paperdark-2' : task === t.id ? 'border-astonorange bg-astondeep text-white' : !t.unlocked ? 'border-astondeep text-midgrey opacity-50 cursor-not-allowed bg-paperdark-2' : 'border-astonpink text-astonpink bg-paperdark-2 hover:bg-astondeep'}`
+  }, t.done ? '✓ ' : !t.unlocked ? '🔒 ' : '', t.label))), task === 'D1' && /*#__PURE__*/React.createElement("div", {
+    className: "card p-5 animate-fade-in"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-astonorange font-display font-bold tracking-widest text-xs mb-2"
+  }, "TASK D1 · WARM-UP — FACTORISE (~4 MIN)"), /*#__PURE__*/React.createElement("div", {
+    className: "text-white text-sm mb-4"
+  }, "For each public modulus n, pick the two prime factors. Click to select, click again to deselect."), D1_TARGETS.map(t => /*#__PURE__*/React.createElement("div", {
+    key: t.n,
+    className: "mb-4"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex flex-wrap items-center gap-2 mb-2"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "font-mono text-white text-xl border-2 border-termgreen rounded px-3 py-1"
+  }, "n = ", t.n), d1Selected[t.n].length > 0 && /*#__PURE__*/React.createElement("div", {
+    className: "text-astonorange font-mono text-sm"
+  }, d1Selected[t.n].join(' × '), d1Selected[t.n].length === 2 ? ` = ${d1Selected[t.n][0] * d1Selected[t.n][1]}` : ''), d1Done[t.n] && /*#__PURE__*/React.createElement("div", {
+    className: "text-termgreen font-display font-bold tracking-widest text-xs"
+  }, "✓ FACTORED · φ = ", t.phi)), /*#__PURE__*/React.createElement("div", {
+    className: "flex flex-wrap gap-2"
+  }, PRIME_LIST_D1.map(p => {
+    const selected = d1Selected[t.n].includes(p);
+    const isCorrect = d1Done[t.n] && t.primes.includes(p);
+    return /*#__PURE__*/React.createElement("button", {
+      key: p,
+      disabled: d1Done[t.n],
+      onClick: () => clickPrimeForN(t.n, p),
+      className: `prime-btn ${isCorrect ? 'correct' : ''}`,
+      style: selected && !isCorrect ? {
+        borderColor: 'var(--astonorange)',
+        background: 'var(--astonorange)'
+      } : {}
+    }, p);
+  })))), d1AllDone && /*#__PURE__*/React.createElement("button", {
+    className: "btn-primary",
+    onClick: () => setTask('D2')
+  }, "NEXT: D2 ▶"), /*#__PURE__*/React.createElement(HintLadder, {
+    taskId: "D1",
+    hints: ['91 ÷ 7 = 13. So 91 = 7 × 13.', '187 ÷ 11 = 17. So 187 = 11 × 17.', '437 ÷ 19 = 23. So 437 = 19 × 23.']
+  })), task === 'D2' && /*#__PURE__*/React.createElement("div", {
+    className: "card p-5 animate-fade-in"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-astonorange font-display font-bold tracking-widest text-xs mb-2"
+  }, "TASK D2 · WHY IS THIS HARD?"), /*#__PURE__*/React.createElement("div", {
+    className: "text-white space-y-3 mb-4"
+  }, /*#__PURE__*/React.createElement("p", null, "For n = 437 you tested 2, 3, 5, 7, 11, 13, 17 — then 19. That's ", /*#__PURE__*/React.createElement("strong", {
+    className: "text-astonorange"
+  }, "8 trial divisions"), " for an 8-bit number."), /*#__PURE__*/React.createElement("p", null, "How many trial divisions would be needed for the ", /*#__PURE__*/React.createElement("strong", {
+    className: "text-astonpink"
+  }, "617-decimal-digit numbers"), " that protect your bank?"), /*#__PURE__*/React.createElement("div", {
+    className: "bg-black border border-termgreen p-3 font-mono text-termgreen text-sm"
+  }, "▶ approximately 10^300 primes to test.", /*#__PURE__*/React.createElement("br", null), "▶ even at 10^9 tests per second, this takes longer than the universe will last."), /*#__PURE__*/React.createElement("p", null, "That's why bankers sleep at night. ", /*#__PURE__*/React.createElement("strong", {
+    className: "text-astonorange"
+  }, "But this is exactly what a quantum computer could break."), " You'll see why in Section E.")), /*#__PURE__*/React.createElement("button", {
+    className: "btn-primary",
+    onClick: () => setTask('D3')
+  }, "I UNDERSTAND ▶")), task === 'D3' && /*#__PURE__*/React.createElement("div", {
+    className: "card p-5 animate-fade-in"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-astonorange font-display font-bold tracking-widest text-xs mb-2"
+  }, "TASK D3 · THE BOSS KEY (~6 MIN)"), /*#__PURE__*/React.createElement("div", {
+    className: "text-white text-sm mb-3"
+  }, "The Aston database master key uses modulus:"), /*#__PURE__*/React.createElement("div", {
+    className: "text-center mb-3"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "inline-block bg-black border-2 border-termgreen rounded px-6 py-2 font-mono text-3xl text-termgreen"
+  }, "n = ", D3_N)), /*#__PURE__*/React.createElement("div", {
+    className: "text-offwhite text-sm mb-4 bg-paperdark-2 border-l-4 border-astonorange p-3"
+  }, /*#__PURE__*/React.createElement("strong", {
+    className: "text-astonorange"
+  }, "HINT:"), " 1517 is not divisible by 2, 3, 5, 7, 11, 13, 17, 19, 23, 29 or 31. Start with primes ≥ 37. But √1517 ≈ 38.9, so you only need primes up to 38."), /*#__PURE__*/React.createElement("div", {
+    className: "mb-4"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-astonpink font-display font-bold tracking-widest text-xs mb-2"
+  }, "CLICK TO TEST EACH PRIME — DIVIDES INTO 1517?"), /*#__PURE__*/React.createElement("div", {
+    className: "flex flex-wrap gap-2"
+  }, D3_PRIMES.map(p => {
+    const result = d3Tested[p];
+    const isFactor = D3_TRUE.includes(p);
+    return /*#__PURE__*/React.createElement("button", {
+      key: p,
+      onClick: () => testD3Prime(p),
+      disabled: !!d3Tested[p],
+      className: `prime-btn ${result && isFactor ? 'correct' : result && !isFactor ? 'wrong' : ''}`
+    }, p, " ", result && /*#__PURE__*/React.createElement("span", {
+      className: "font-mono text-xs ml-1"
+    }, result));
+  }))), d3FoundFactors.length >= 2 && /*#__PURE__*/React.createElement("div", {
+    className: "animate-slide-up bg-paperdark-2 border-2 border-termgreen rounded p-3 mb-4"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-termgreen font-display font-bold tracking-widest text-xs mb-2"
+  }, "✓ FACTORS FOUND"), /*#__PURE__*/React.createElement("div", {
+    className: "font-mono text-white text-lg mb-3"
+  }, D3_N, " = ", /*#__PURE__*/React.createElement("span", {
+    className: "text-termgreen"
+  }, d3FoundFactors[0]), " × ", /*#__PURE__*/React.createElement("span", {
+    className: "text-termgreen"
+  }, d3FoundFactors[1])), /*#__PURE__*/React.createElement("div", {
+    className: "text-white text-sm mb-3"
+  }, "Now compute Euler's totient: ", /*#__PURE__*/React.createElement("strong", {
+    className: "font-mono text-astonorange"
+  }, "φ(n) = (p − 1)(q − 1) = (36)(40) = ?")), /*#__PURE__*/React.createElement("div", {
+    className: "flex flex-wrap items-center gap-3"
+  }, /*#__PURE__*/React.createElement("input", {
+    type: "number",
+    className: "input-cyber w-32 text-center",
+    placeholder: "φ",
+    value: d3PhiInput,
+    onChange: e => setD3PhiInput(e.target.value),
+    disabled: d3Done
+  }), /*#__PURE__*/React.createElement("button", {
+    className: "btn-primary",
+    disabled: d3Done,
+    onClick: submitPhi
+  }, d3Done ? '✓ CONFIRMED' : 'SUBMIT φ'))), /*#__PURE__*/React.createElement(HintLadder, {
+    taskId: "D3",
+    hints: ['The hint says skip primes ≤ 31. So your first candidate is 37. Try it.', 'If 37 is a factor, the other factor is 1517 ÷ 37. What is that?', '1517 = 37 × 41. Then φ(1517) = 36 × 40 = 1440.']
+  })));
+}
+
+// === SECTION E ===
+function SectionE({
+  onComplete,
+  addLog,
+  showToast,
+  showWarn
+}) {
+  const [task, setTask] = useState('E1');
+  const E1_CIPHER = ['M', 'O', 'R', 'C', 'Z', ' ', 'K', 'O', ' ', 'O', 'M', 'B', 'Y'];
+  const E1_STAGE1 = ['H', 'J', 'M', 'X', 'U', ' ', 'F', 'J', ' ', 'J', 'H', 'W', 'T'];
+  const E1_STAGE2 = ['A', 'S', 'T', 'O', 'N', ' ', 'I', 'S', ' ', 'S', 'A', 'F', 'E'];
+  const [stage1, setStage1] = useState(E1_CIPHER.map(c => c === ' ' ? ' ' : ''));
+  const [stage2, setStage2] = useState(E1_CIPHER.map(c => c === ' ' ? ' ' : ''));
+  const [stage1Done, setStage1Done] = useState(false);
+  const [stage2Done, setStage2Done] = useState(false);
+  const [stage1Shake, setStage1Shake] = useState(false);
+  const [stage2Shake, setStage2Shake] = useState(false);
+  function setCell(stage, i, val) {
+    const v = (val || '').toUpperCase().replace(/[^A-Z]/g, '').slice(0, 1);
+    if (stage === 1) {
+      const a = stage1.slice();
+      a[i] = v;
+      setStage1(a);
+    } else {
+      const a = stage2.slice();
+      a[i] = v;
+      setStage2(a);
+    }
+  }
+  function submitStage1() {
+    const ok = stage1.every((c, i) => c === E1_STAGE1[i]);
+    if (ok) {
+      setStage1Done(true);
+      addLog('E1 stage 1: Caesar reversed → HJMXU FJ JHWT', 'success');
+      showToast({
+        type: 'success',
+        title: 'CAESAR PEELED',
+        message: 'First layer removed. Now reverse the hash.'
+      });
+    } else {
+      setStage1Shake(true);
+      setTimeout(() => setStage1Shake(false), 500);
+      showWarn({
+        title: 'STAGE 1 FAILED',
+        body: 'Shift each cipher letter back by 5. M(12)−5=7→H. O(14)−5=9→J. Try again.'
+      });
+    }
+  }
+  function submitStage2() {
+    const ok = stage2.every((c, i) => c === E1_STAGE2[i]);
+    if (ok) {
+      setStage2Done(true);
+      addLog('E1 stage 2: hash reversed → ASTON IS SAFE', 'success');
+      showToast({
+        type: 'success',
+        title: 'SYSTEM RESTORED',
+        message: 'Decoded: ASTON IS SAFE.'
+      });
+    } else {
+      setStage2Shake(true);
+      setTimeout(() => setStage2Shake(false), 500);
+      showWarn({
+        title: 'STAGE 2 FAILED',
+        body: 'Use the inverse hash from Section C. h⁻¹(y) = 9(y−7) mod 26. Or look up which plain letter h(x) sends to it.'
+      });
+    }
+  }
+  const [e2Cipher, setE2Cipher] = useState('');
+  const [e2Submitted, setE2Submitted] = useState(false);
+  function submitE2() {
+    if (e2Cipher.trim().length < 20) {
+      showWarn({
+        title: 'BRIEFING TOO SHORT',
+        body: 'Describe your post-quantum cipher in at least 20 characters. There are no wrong answers — just sketch your idea.'
+      });
+      return;
+    }
+    setE2Submitted(true);
+    addLog(`E2: design submitted (${e2Cipher.trim().length} chars)`, 'success');
+    showToast({
+      type: 'success',
+      title: 'DESIGN LOGGED',
+      message: 'Your post-quantum design has been recorded with Aston Cyber Command.'
+    });
+    setTimeout(() => {
+      onComplete('E', 'ASTON IS SAFE', {
+        sectionName: 'THE QUANTUM GAUNTLET',
+        calloutLabel: 'Final broadcast',
+        realWorld: "You confronted the quantum threat. NIST has finalised the first wave of post-quantum standards (CRYSTALS-Kyber, CRYSTALS-Dilithium). They rely on lattice problems — exactly the kind of weirder maths your design considered. This is active research at universities right now, including Aston."
+      });
+    }, 1000);
+  }
+  return /*#__PURE__*/React.createElement("div", {
+    className: "max-w-7xl mx-auto px-4 pb-6"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex gap-2 mb-4"
+  }, [{
+    id: 'E1',
+    label: 'E1 · COMPOSITE DECODE',
+    done: stage1Done && stage2Done,
+    unlocked: true
+  }, {
+    id: 'E2',
+    label: 'E2 · POST-QUANTUM DESIGN',
+    done: e2Submitted,
+    unlocked: stage1Done && stage2Done
+  }].map(t => /*#__PURE__*/React.createElement("button", {
+    key: t.id,
+    disabled: !t.unlocked,
+    onClick: () => setTask(t.id),
+    className: `flex-1 px-3 py-2 rounded border-2 font-display font-bold tracking-widest text-xs sm:text-sm transition-all ${t.done ? 'border-termgreen text-termgreen bg-paperdark-2' : task === t.id ? 'border-astonorange bg-astondeep text-white' : !t.unlocked ? 'border-astondeep text-midgrey opacity-50 cursor-not-allowed bg-paperdark-2' : 'border-astonpink text-astonpink bg-paperdark-2 hover:bg-astondeep'}`
+  }, t.done ? '✓ ' : !t.unlocked ? '🔒 ' : '', t.label))), task === 'E1' && /*#__PURE__*/React.createElement("div", {
+    className: "card p-5 animate-fade-in"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-astonorange font-display font-bold tracking-widest text-xs mb-2"
+  }, "TASK E1 · COMPOSITE DECODE (~5 MIN)"), /*#__PURE__*/React.createElement("div", {
+    className: "text-white text-sm mb-3"
+  }, "The Syndicate's final broadcast uses ", /*#__PURE__*/React.createElement("strong", null, "two layers"), ": their hash from Section C, ", /*#__PURE__*/React.createElement("em", null, "then"), " a Caesar shift of +5. ", /*#__PURE__*/React.createElement("strong", {
+    className: "text-astonorange"
+  }, "Undo both — in reverse order.")), /*#__PURE__*/React.createElement("div", {
+    className: "bg-black border-2 border-termgreen rounded p-3 mb-4"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-termgreen font-mono text-xs mb-2"
+  }, "▶ CIPHERTEXT"), /*#__PURE__*/React.createElement("div", {
+    className: "flex flex-wrap"
+  }, E1_CIPHER.map((c, i) => c === ' ' ? /*#__PURE__*/React.createElement("div", {
+    key: i,
+    className: "cipher-cell space"
+  }) : /*#__PURE__*/React.createElement("div", {
+    key: i,
+    className: "cipher-cell"
+  }, c)))), /*#__PURE__*/React.createElement("div", {
+    className: "mb-4"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-astonpink font-display font-bold tracking-widest text-xs mb-2"
+  }, "STEP 1 · REVERSE CAESAR (shift back by 5)"), /*#__PURE__*/React.createElement("div", {
+    className: `flex flex-wrap ${stage1Shake ? 'animate-shake' : ''}`
+  }, E1_CIPHER.map((c, i) => c === ' ' ? /*#__PURE__*/React.createElement("div", {
+    key: i,
+    className: "cipher-cell space"
+  }) : /*#__PURE__*/React.createElement("input", {
+    key: i,
+    type: "text",
+    maxLength: 1,
+    className: "cipher-cell",
+    value: stage1[i],
+    disabled: stage1Done,
+    onChange: e => setCell(1, i, e.target.value),
+    style: {
+      background: stage1[i] === E1_STAGE1[i] ? 'rgba(0,255,102,0.15)' : 'rgba(0,0,0,0.65)',
+      color: 'white',
+      borderColor: stage1[i] ? stage1[i] === E1_STAGE1[i] ? 'var(--termgreen)' : 'var(--warnred)' : 'var(--astonorange)'
+    }
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "mt-2 flex gap-2"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn-primary",
+    disabled: stage1Done,
+    onClick: submitStage1
+  }, stage1Done ? '✓ STAGE 1 OK' : 'CHECK STAGE 1'), !stage1Done && /*#__PURE__*/React.createElement("button", {
+    className: "btn-ghost",
+    onClick: () => setStage1(E1_CIPHER.map(c => c === ' ' ? ' ' : ''))
+  }, "RESET"))), stage1Done && /*#__PURE__*/React.createElement("div", {
+    className: "animate-slide-up mb-4"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-astonpink font-display font-bold tracking-widest text-xs mb-2"
+  }, "STEP 2 · REVERSE THE HASH (use your inverse hash from Section C)"), /*#__PURE__*/React.createElement("div", {
+    className: `flex flex-wrap ${stage2Shake ? 'animate-shake' : ''}`
+  }, E1_STAGE1.map((c, i) => c === ' ' ? /*#__PURE__*/React.createElement("div", {
+    key: i,
+    className: "cipher-cell space"
+  }) : /*#__PURE__*/React.createElement("input", {
+    key: i,
+    type: "text",
+    maxLength: 1,
+    className: "cipher-cell",
+    value: stage2[i],
+    disabled: stage2Done,
+    onChange: e => setCell(2, i, e.target.value),
+    style: {
+      background: stage2[i] === E1_STAGE2[i] ? 'rgba(0,255,102,0.15)' : 'rgba(0,0,0,0.65)',
+      color: 'white',
+      borderColor: stage2[i] ? stage2[i] === E1_STAGE2[i] ? 'var(--termgreen)' : 'var(--warnred)' : 'var(--astonorange)'
+    }
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "mt-2 flex gap-2"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn-primary",
+    disabled: stage2Done,
+    onClick: submitStage2
+  }, stage2Done ? '✓ DECODED' : 'CHECK STAGE 2'), !stage2Done && /*#__PURE__*/React.createElement("button", {
+    className: "btn-ghost",
+    onClick: () => setStage2(E1_CIPHER.map(c => c === ' ' ? ' ' : ''))
+  }, "RESET"), stage2Done && /*#__PURE__*/React.createElement("button", {
+    className: "btn-pink",
+    onClick: () => setTask('E2')
+  }, "NEXT: E2 ▶")), stage2Done && /*#__PURE__*/React.createElement("div", {
+    className: "mt-3 bg-paperdark border-2 border-termgreen rounded p-3 animate-slide-up"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-termgreen font-mono text-xs mb-1"
+  }, "> FINAL BROADCAST"), /*#__PURE__*/React.createElement("div", {
+    className: "font-display font-black text-white text-2xl tracking-wider"
+  }, "ASTON IS SAFE."))), /*#__PURE__*/React.createElement(HintLadder, {
+    taskId: "E1",
+    hints: ["Reverse Caesar +5 means shift each letter back 5. M(12)−5=7→H. O(14)−5=9→J.", "For Step 2, use your inverse hash. H came from A (h(A)=H). J came from S. M came from T.", "Stage 1: HJMXU FJ JHWT. Stage 2: ASTON IS SAFE."]
+  })), task === 'E2' && /*#__PURE__*/React.createElement("div", {
+    className: "card p-5 animate-fade-in"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-astonorange font-display font-bold tracking-widest text-xs mb-2"
+  }, "TASK E2 · POST-QUANTUM DESIGN (~5 MIN)"), /*#__PURE__*/React.createElement("div", {
+    className: "text-warnred font-display font-bold tracking-widest text-xs mb-3"
+  }, "⚠ NO TEAM IS EXPECTED TO FINISH"), /*#__PURE__*/React.createElement("div", {
+    className: "text-white text-sm mb-3 space-y-2"
+  }, /*#__PURE__*/React.createElement("p", null, "RSA falls to Shor's algorithm because factoring becomes ", /*#__PURE__*/React.createElement("em", null, "easy"), " on a quantum computer. ", /*#__PURE__*/React.createElement("strong", {
+    className: "text-astonorange"
+  }, "Design a cipher you believe could resist a quantum attack."))), /*#__PURE__*/React.createElement("div", {
+    className: "bg-paperdark-2 border-l-4 border-astonpink p-3 mb-3"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-astonpink font-display font-bold tracking-widest text-xs mb-1"
+  }, "CONSIDER:"), /*#__PURE__*/React.createElement("ul", {
+    className: "text-offwhite text-sm space-y-1 list-disc pl-5"
+  }, /*#__PURE__*/React.createElement("li", null, /*#__PURE__*/React.createElement("strong", {
+    className: "text-white"
+  }, "One-time pad:"), " random key, XOR, provably unbreakable. So why doesn't the world use it?"), /*#__PURE__*/React.createElement("li", null, /*#__PURE__*/React.createElement("strong", {
+    className: "text-white"
+  }, "Lattice problems:"), " find the shortest vector in a grid — believed hard for any computer (the basis of CRYSTALS-Kyber)."), /*#__PURE__*/React.createElement("li", null, /*#__PURE__*/React.createElement("strong", {
+    className: "text-white"
+  }, "Hash chains & Merkle trees:"), " build security from repeated hashing."))), /*#__PURE__*/React.createElement("textarea", {
+    className: "input-cyber w-full",
+    rows: 6,
+    placeholder: "DESCRIBE YOUR CIPHER: how does it work? Why is it quantum-resistant? What's a weakness?",
+    value: e2Cipher,
+    disabled: e2Submitted,
+    onChange: e => setE2Cipher(e.target.value)
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "mt-3 flex flex-wrap gap-3 items-center"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn-primary",
+    disabled: e2Submitted,
+    onClick: submitE2
+  }, e2Submitted ? '✓ DESIGN SUBMITTED' : 'SUBMIT DESIGN'), /*#__PURE__*/React.createElement("div", {
+    className: "text-midgrey font-mono text-xs"
+  }, e2Cipher.trim().length, " characters (min 20)"))));
+}
+
+// === COMPLETION SCREEN ===
+function CompletionScreen({
+  elapsed,
+  codewords,
+  schoolName,
+  teamName,
+  onRestart
+}) {
+  return /*#__PURE__*/React.createElement("div", {
+    className: "max-w-4xl mx-auto px-4 py-6 animate-fade-in"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-center mb-6"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-termgreen font-display font-bold tracking-widest text-xs mb-2"
+  }, "▶ CLASSIFIED // OPERATION DEBRIEF"), /*#__PURE__*/React.createElement("h1", {
+    className: "font-display font-black text-white",
+    style: {
+      fontSize: 'clamp(2rem,7vw,4rem)',
+      lineHeight: 1
+    }
+  }, "MISSION"), /*#__PURE__*/React.createElement("h1", {
+    className: "font-display font-black text-termgreen",
+    style: {
+      fontSize: 'clamp(2rem,7vw,4rem)',
+      lineHeight: 1
+    }
+  }, "COMPLETE"), /*#__PURE__*/React.createElement("div", {
+    className: "w-32 h-px bg-astonorange mx-auto my-4"
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "text-offwhite text-lg italic"
+  }, "The Cipher Syndicate has been locked out."), /*#__PURE__*/React.createElement("div", {
+    className: "font-display font-bold text-astonpink text-2xl tracking-wider mt-3"
+  }, "ASTON IS SAFE.")), /*#__PURE__*/React.createElement("div", {
+    className: "grid grid-cols-1 sm:grid-cols-2 gap-3 mb-5"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "card card-orange p-4 text-center"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-astonorange font-display font-bold tracking-widest text-xs mb-1"
+  }, "OPERATIVE"), /*#__PURE__*/React.createElement("div", {
+    className: "font-display font-bold text-white text-xl"
+  }, teamName), /*#__PURE__*/React.createElement("div", {
+    className: "text-offwhite text-sm"
+  }, schoolName)), /*#__PURE__*/React.createElement("div", {
+    className: "card card-pink p-4 text-center"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-astonpink font-display font-bold tracking-widest text-xs mb-1"
+  }, "TOTAL TIME"), /*#__PURE__*/React.createElement("div", {
+    className: "font-display font-black text-white text-3xl"
+  }, fmtTime(elapsed)), /*#__PURE__*/React.createElement("div", {
+    className: "text-offwhite text-xs font-mono"
+  }, Math.floor(elapsed / 60), " min ", elapsed % 60, " sec"))), /*#__PURE__*/React.createElement("div", {
+    className: "card p-5 mb-5"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-termgreen font-display font-bold tracking-widest text-xs mb-3"
+  }, "▶ FIVE DEFENCE LAYERS BREACHED"), /*#__PURE__*/React.createElement("div", {
+    className: "space-y-2"
+  }, [{
+    id: 'A',
+    name: 'AUTHENTICATION LAYER',
+    what: 'Symmetric encryption · Bletchley Park / Enigma'
+  }, {
+    id: 'B',
+    name: 'THE FIREWALL',
+    what: 'Network forensics · the daily work of every SOC on Earth'
+  }, {
+    id: 'C',
+    name: 'THE HASH FUNCTION',
+    what: 'One-way functions · LinkedIn 2012'
+  }, {
+    id: 'D',
+    name: 'THE PRIME VAULT',
+    what: 'RSA cryptography · invented by Rivest/Shamir/Adleman'
+  }, {
+    id: 'E',
+    name: 'THE QUANTUM GAUNTLET',
+    what: "Shor's algorithm · post-quantum cryptography"
+  }].map(s => /*#__PURE__*/React.createElement("div", {
+    key: s.id,
+    className: "flex items-center gap-3 bg-paperdark border-l-4 border-termgreen p-2"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "badge-section bg-termgreen w-10 h-10 text-xl rounded",
+    style: {
+      color: 'var(--paperdark)'
+    }
+  }, s.id), /*#__PURE__*/React.createElement("div", {
+    className: "flex-1"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "font-display font-bold text-white text-sm tracking-wider"
+  }, s.name), /*#__PURE__*/React.createElement("div", {
+    className: "text-midgrey text-xs"
+  }, s.what)), codewords[s.id] && /*#__PURE__*/React.createElement("div", {
+    className: "text-termgreen font-mono text-xs"
+  }, codewords[s.id]))))), /*#__PURE__*/React.createElement("div", {
+    className: "card card-orange p-5 mb-5"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-astonorange font-display font-bold tracking-widest text-xs mb-2"
+  }, "▲ INTEL: WHERE TO GO NEXT"), /*#__PURE__*/React.createElement("div", {
+    className: "text-offwhite text-sm space-y-2"
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("strong", {
+    className: "text-white"
+  }, "Books:"), " The Code Book (Simon Singh) · Cracking Codes with Python (Al Sweigart)"), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("strong", {
+    className: "text-white"
+  }, "Free online:"), " cryptohack.org (gamified university-level crypto puzzles) · the Bletchley Park Code Breakers material"), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("strong", {
+    className: "text-white"
+  }, "University paths:"), " Mathematics · Computer Science · Cyber Security — open doors to GCHQ, NCSC, banks, consultancies, academic research."), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("strong", {
+    className: "text-white"
+  }, "Maths topics ahead:"), " Number Theory · Linear Algebra · Probability · Group Theory"))), /*#__PURE__*/React.createElement("div", {
+    className: "text-center mb-5"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "font-display font-bold text-astonpink text-lg tracking-wider italic"
+  }, "IF TODAY EXCITED YOU — YOU ARE ALREADY THINKING LIKE A CRYPTOGRAPHER.")), /*#__PURE__*/React.createElement("div", {
+    className: "text-center"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn-ghost text-base",
+    onClick: onRestart
+  }, "▶ NEW MISSION")));
+}
+
+// === MAIN APP ===
+function App() {
+  const [view, setView] = useState('intro');
+  const [school, setSchool] = useState('');
+  const [team, setTeam] = useState('');
+  const [progress, setProgress] = useState({
+    A: false,
+    B: false,
+    C: false,
+    D: false,
+    E: false
+  });
+  const [codewords, setCodewords] = useState({
+    A: null,
+    B: null,
+    C: null,
+    D: null,
+    E: null
+  });
+  const [log, setLog] = useState([]);
+  const [logOpen, setLogOpen] = useState(false);
+  const [toasts, setToasts] = useState([]);
+  const [warning, setWarning] = useState(null);
+  const [reportIn, setReportIn] = useState(null);
+  const [confetti, setConfetti] = useState(false);
+  const [startTime, setStartTime] = useState(null);
+  const [completionTime, setCompletionTime] = useState(null);
+  const [elapsed, setElapsed] = useState(0);
+  const nextId = useRef(1);
+
+  // tick the timer
+  useEffect(() => {
+    if (!startTime || completionTime) return;
+    const t = setInterval(() => setElapsed(Math.floor((Date.now() - startTime) / 1000)), 1000);
+    return () => clearInterval(t);
+  }, [startTime, completionTime]);
+  function addLog(msg, type = 'info') {
+    const t = new Date().toLocaleTimeString('en-GB', {
+      hour12: false
+    });
+    setLog(prev => [...prev, {
+      t,
+      msg,
+      type
+    }].slice(-100));
+  }
+  function showToast(opts) {
+    const id = nextId.current++;
+    setToasts(prev => [...prev, {
+      id,
+      ...opts
+    }]);
+    const ttl = opts.type === 'error' ? 5000 : 3200;
+    setTimeout(() => setToasts(prev => prev.filter(x => x.id !== id)), ttl);
+  }
+  function showWarn(opts) {
+    setWarning(opts);
+    addLog(`⚠ ${opts.title}`, 'warn');
+  }
+  function startMission() {
+    addLog('Operative authenticated. Entering Command Centre.', 'system');
+    setStartTime(Date.now());
+    setView('briefing');
+  }
+  function completeSection(letter, codeword, meta) {
+    setCodewords(prev => ({
+      ...prev,
+      [letter]: codeword
+    }));
+    setProgress(prev => ({
+      ...prev,
+      [letter]: true
+    }));
+    setConfetti(true);
+    setTimeout(() => setConfetti(false), 2600);
+    const next = letter === 'A' ? 'B' : letter === 'B' ? 'C' : letter === 'C' ? 'D' : letter === 'D' ? 'E' : null;
+    setReportIn({
+      letter,
+      codeword,
+      next,
+      ...meta
+    });
+    addLog(`▶ SECTION ${letter} COMPLETE. Reporting: ${codeword}`, 'success');
+  }
+  function dismissReportIn() {
+    const letter = reportIn?.letter;
+    setReportIn(null);
+    if (letter === 'E') {
+      setCompletionTime(Date.now());
+      setView('complete');
+      addLog('🎉 MISSION COMPLETE. All five layers breached. Aston is safe.', 'success');
+    } else {
+      setView('map');
+    }
+  }
+  function restart() {
+    setView('intro');
+    setSchool('');
+    setTeam('');
+    setProgress({
+      A: false,
+      B: false,
+      C: false,
+      D: false,
+      E: false
+    });
+    setCodewords({
+      A: null,
+      B: null,
+      C: null,
+      D: null,
+      E: null
+    });
+    setLog([]);
+    setToasts([]);
+    setWarning(null);
+    setReportIn(null);
+    setStartTime(null);
+    setCompletionTime(null);
+    setElapsed(0);
+  }
+  return /*#__PURE__*/React.createElement("div", {
+    className: "min-h-screen pb-24"
+  }, view !== 'intro' && /*#__PURE__*/React.createElement(ClassifiedHeader, {
+    schoolName: school,
+    teamName: team,
+    elapsed: elapsed
+  }), view === 'intro' && /*#__PURE__*/React.createElement(IntroScreen, {
+    schoolName: school,
+    teamName: team,
+    setSchool: setSchool,
+    setTeam: setTeam,
+    onStart: startMission
+  }), view === 'briefing' && /*#__PURE__*/React.createElement(MissionBriefing, {
+    onContinue: () => setView('map')
+  }), view === 'map' && /*#__PURE__*/React.createElement(SectionMap, {
+    progress: progress,
+    codewords: codewords,
+    schoolName: school,
+    teamName: team,
+    onEnter: id => id === 'complete' ? setView('complete') : setView('section' + id)
+  }), view === 'sectionA' && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "max-w-7xl mx-auto px-4 pt-4 flex items-center justify-between"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "font-display font-bold text-astonpink tracking-widest text-sm"
+  }, "SECTION A · AUTHENTICATION LAYER"), /*#__PURE__*/React.createElement("button", {
+    className: "btn-ghost text-xs",
+    onClick: () => setView('map')
+  }, "◀ MAP")), /*#__PURE__*/React.createElement(SectionA, {
+    onComplete: completeSection,
+    addLog: addLog,
+    showToast: showToast,
+    showWarn: showWarn
+  })), view === 'sectionB' && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "max-w-7xl mx-auto px-4 pt-4 flex items-center justify-between"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "font-display font-bold text-astonpink tracking-widest text-sm"
+  }, "SECTION B · THE FIREWALL"), /*#__PURE__*/React.createElement("button", {
+    className: "btn-ghost text-xs",
+    onClick: () => setView('map')
+  }, "◀ MAP")), /*#__PURE__*/React.createElement(SectionB, {
+    onComplete: completeSection,
+    addLog: addLog,
+    showToast: showToast,
+    showWarn: showWarn
+  })), view === 'sectionC' && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "max-w-7xl mx-auto px-4 pt-4 flex items-center justify-between"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "font-display font-bold text-astonpink tracking-widest text-sm"
+  }, "SECTION C · THE HASH FUNCTION"), /*#__PURE__*/React.createElement("button", {
+    className: "btn-ghost text-xs",
+    onClick: () => setView('map')
+  }, "◀ MAP")), /*#__PURE__*/React.createElement(SectionC, {
+    onComplete: completeSection,
+    addLog: addLog,
+    showToast: showToast,
+    showWarn: showWarn
+  })), view === 'sectionD' && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "max-w-7xl mx-auto px-4 pt-4 flex items-center justify-between"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "font-display font-bold text-astonpink tracking-widest text-sm"
+  }, "SECTION D · THE PRIME VAULT"), /*#__PURE__*/React.createElement("button", {
+    className: "btn-ghost text-xs",
+    onClick: () => setView('map')
+  }, "◀ MAP")), /*#__PURE__*/React.createElement(SectionD, {
+    onComplete: completeSection,
+    addLog: addLog,
+    showToast: showToast,
+    showWarn: showWarn
+  })), view === 'sectionE' && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "max-w-7xl mx-auto px-4 pt-4 flex items-center justify-between"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "font-display font-bold text-astonpink tracking-widest text-sm"
+  }, "SECTION E · THE QUANTUM GAUNTLET"), /*#__PURE__*/React.createElement("button", {
+    className: "btn-ghost text-xs",
+    onClick: () => setView('map')
+  }, "◀ MAP")), /*#__PURE__*/React.createElement(SectionE, {
+    onComplete: completeSection,
+    addLog: addLog,
+    showToast: showToast,
+    showWarn: showWarn
+  })), view === 'complete' && /*#__PURE__*/React.createElement(CompletionScreen, {
+    elapsed: completionTime ? Math.floor((completionTime - startTime) / 1000) : elapsed,
+    codewords: codewords,
+    schoolName: school,
+    teamName: team,
+    onRestart: restart
+  }), /*#__PURE__*/React.createElement(ToastStack, {
+    toasts: toasts
+  }), /*#__PURE__*/React.createElement(Confetti, {
+    active: confetti
+  }), /*#__PURE__*/React.createElement(WarningModal, {
+    open: !!warning,
+    title: warning?.title,
+    body: warning?.body,
+    onClose: () => setWarning(null)
+  }), /*#__PURE__*/React.createElement(ReportInOverlay, {
+    data: reportIn,
+    onContinue: dismissReportIn,
+    schoolName: school
+  }), /*#__PURE__*/React.createElement(TerminalLog, {
+    entries: log,
+    open: logOpen,
+    onToggle: () => setLogOpen(!logOpen)
+  }));
+}
+ReactDOM.createRoot(document.getElementById('root')).render(/*#__PURE__*/React.createElement(App, null));
+</script>
+</body>
+</html>
