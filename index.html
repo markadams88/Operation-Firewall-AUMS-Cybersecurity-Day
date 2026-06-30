@@ -212,6 +212,7 @@ function fmtTime(seconds) {
   const s = seconds % 60;
   return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
 }
+const LOGO_WHITE = "data:image/png;base64,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";
 
 // === CHROME COMPONENTS ===
 function ClassifiedHeader({
@@ -225,7 +226,7 @@ function ClassifiedHeader({
     className: "bg-astonorange w-full"
   }, /*#__PURE__*/React.createElement("div", {
     className: "max-w-7xl mx-auto px-4 py-1.5 flex items-center justify-between font-display text-white text-xs sm:text-sm font-bold tracking-widest"
-  }, /*#__PURE__*/React.createElement("span", null, "CLASSIFIED // ASTON CYBER COMMAND // EYES ONLY"), /*#__PURE__*/React.createElement("span", {
+  }, /*#__PURE__*/React.createElement("span", { className: "flex items-center gap-2" }, /*#__PURE__*/React.createElement("img", { src: LOGO_WHITE, alt: "AUMS", style: { height: "15px" } }), /*#__PURE__*/React.createElement("span", { className: "hide-mobile" }, "CLASSIFIED // ASTON CYBER COMMAND // EYES ONLY")), /*#__PURE__*/React.createElement("span", {
     className: "hide-mobile font-mono"
   }, schoolName || 'UNASSIGNED', " · ", teamName || 'NO CALLSIGN'))), /*#__PURE__*/React.createElement("div", {
     className: "bg-paperdark-2 border-b border-astondeep w-full"
@@ -431,7 +432,7 @@ function IntroScreen({
     className: "max-w-3xl mx-auto px-4 py-10 animate-fade-in"
   }, /*#__PURE__*/React.createElement("div", {
     className: "text-center mb-8"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("img", { src: LOGO_WHITE, alt: "Aston University Mathematics School", className: "mx-auto mb-4", style: { width: "min(280px, 72%)" } }), /*#__PURE__*/React.createElement("div", {
     className: "text-astonorange font-display font-bold tracking-widest text-xs mb-2"
   }, "CLASSIFIED // EYES ONLY"), /*#__PURE__*/React.createElement("h1", {
     className: "font-display font-black text-white",
@@ -501,7 +502,10 @@ function IntroScreen({
     onClick: onStart
   }, "▶ ENTER COMMAND CENTRE"), !canStart && /*#__PURE__*/React.createElement("div", {
     className: "text-midgrey text-xs mt-2 font-mono"
-  }, "Enter school name and team callsign to continue.")));
+  }, "Enter school name and team callsign to continue."), /*#__PURE__*/React.createElement("button", {
+    className: "btn-ghost text-xs mt-6",
+    onClick: function () { window.location.hash = '#control'; }
+  }, "⬢ MISSION CONTROL (TEACHER)")));
 }
 function MissionBriefing({
   onContinue
@@ -796,6 +800,7 @@ function SectionA({
   const [task, setTask] = useState('A1');
   const [a1Shift, setA1Shift] = useState(0);
   const [a1Done, setA1Done] = useState(false);
+  const [a1Answer, setA1Answer] = useState('');
   const [a2Shift, setA2Shift] = useState('');
   const [a2Done, setA2Done] = useState(false);
   const [a3Emperor, setA3Emperor] = useState('');
@@ -809,19 +814,19 @@ function SectionA({
   const A3_TARGET = 'JHLZHY';
   const a1Decoded = caesarShift(A1_CIPHER, -a1Shift);
   function submitA1() {
-    if (a1Shift === 3) {
+    if (a1Answer.toUpperCase().replace(/[^A-Z]/g, '') === 'ATTACKATDAWN') {
       setA1Done(true);
-      addLog('A1 decoded: ATTACK AT DAWN (shift = 3)', 'success');
+      addLog('A1 decoded: ATTACK AT DAWN', 'success');
       showToast({
         type: 'success',
         title: 'PACKET ACCEPTED',
         message: 'A1 cracked. Shift = 3. Decoded: ATTACK AT DAWN.'
       });
     } else {
-      addLog(`A1 attempt failed (shift = ${a1Shift})`, 'error');
+      addLog('A1 attempt failed', 'error');
       showWarn({
         title: 'ACCESS DENIED',
-        body: `Decryption with shift ${a1Shift} produced gibberish. The plaintext should read as English. Try a different shift on the wheel.`
+        body: 'That is not right yet. Use the cipher wheel to shift each letter back, type what you read, and make sure it spells real English words.'
       });
     }
   }
@@ -908,7 +913,7 @@ function SectionA({
       const correct = A3_TARGET.split('').filter((c, i) => a3Cells[i] === c).length;
       showWarn({
         title: 'INCORRECT CODEWORD',
-        body: `You have ${correct} of 6 letters right. Each letter is shifted forward by 7. C(2)+7=9→J. A(0)+7=7→H.`
+        body: `${correct} of 6 letters are right. Encrypt each letter of CAESAR by shifting it forward by 7 (wrap past Z), and check each one on the wheel.`
       });
     }
   }
@@ -954,18 +959,23 @@ function SectionA({
     className: "bg-paperdark-2 border-l-4 border-astonorange p-3 mb-3"
   }, /*#__PURE__*/React.createElement("div", {
     className: "text-astonorange font-display font-bold tracking-widest text-xs mb-1"
-  }, "▶ LIVE DECODE (your wheel setting)"), /*#__PURE__*/React.createElement("div", {
-    className: "font-mono text-xl text-white tracking-widest"
-  }, a1Decoded)), /*#__PURE__*/React.createElement("button", {
-    className: "btn-primary",
+  }, "▶ TYPE THE DECODED MESSAGE"), /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    className: "input-cyber w-full",
+    placeholder: "USE THE WHEEL — TYPE WHAT YOU READ",
+    value: a1Answer,
     disabled: a1Done,
+    onChange: e => setA1Answer(e.target.value.toUpperCase())
+  })), /*#__PURE__*/React.createElement("button", {
+    className: "btn-primary",
+    disabled: a1Done || !a1Answer.trim(),
     onClick: submitA1
   }, a1Done ? '✓ DECRYPTED' : 'CONFIRM DECRYPTION'), a1Done && /*#__PURE__*/React.createElement("button", {
     className: "btn-pink ml-3",
     onClick: () => setTask('A2')
   }, "NEXT: A2 ▶"), /*#__PURE__*/React.createElement(HintLadder, {
     taskId: "A1",
-    hints: ['A Caesar shift of 3 means each letter has moved 3 places forward. To decode, move each letter 3 places BACK.', 'Try aligning the wheel so the inner letter D points to plaintext A. That\'s a shift of 3.', 'The decoded message is "ATTACK AT DAWN".']
+    hints: ['A Caesar shift of 3 means each letter moved 3 places forward. To decode, move each letter 3 places BACK.', 'Align the wheel so outer D meets inner A — that undoes a shift of 3. Read each cipher letter off the wheel.', 'Decode it letter by letter and type what you read. It is a two-word military order.']
   })), /*#__PURE__*/React.createElement("div", {
     className: "flex justify-center"
   }, /*#__PURE__*/React.createElement(CaesarWheel, {
@@ -1046,15 +1056,9 @@ function SectionA({
   }, a2Done ? '✓ CONFIRMED' : 'TEST SHIFT'), a2Done && /*#__PURE__*/React.createElement("button", {
     className: "btn-pink",
     onClick: () => setTask('A3')
-  }, "NEXT: A3 ▶")), a2Done && /*#__PURE__*/React.createElement("div", {
-    className: "bg-paperdark border-2 border-termgreen rounded p-3 animate-slide-up"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "text-termgreen font-mono text-xs mb-1"
-  }, "> DECODED MESSAGE"), /*#__PURE__*/React.createElement("div", {
-    className: "font-mono text-base sm:text-lg text-white tracking-wider"
-  }, A2_PLAIN)), /*#__PURE__*/React.createElement(HintLadder, {
+  }, "NEXT: A3 ▶")), null, /*#__PURE__*/React.createElement(HintLadder, {
     taskId: "A2",
-    hints: ['Count: how many positions are between E and ' + a2TopLetter + ' in the alphabet?', 'E is letter 4. ' + a2TopLetter + ' is letter ' + letterToIndex(a2TopLetter) + '. The difference is 7.', 'Try shift = 7.']
+    hints: ['The tallest bar is the cipher letter standing in for E. Which letter is it?', 'Count the positions from E up to that letter — that gap is the shift.', 'Set the wheel to your shift and read the whole message back to check it makes sense.']
   })), task === 'A3' && /*#__PURE__*/React.createElement("div", {
     className: "card p-5 animate-fade-in"
   }, /*#__PURE__*/React.createElement("div", {
@@ -1099,7 +1103,7 @@ function SectionA({
   }, "↓ +7"), /*#__PURE__*/React.createElement("input", {
     type: "text",
     maxLength: 1,
-    className: `input-cyber w-12 text-center text-xl ${a3Cells[i] && (a3Cells[i] === A3_TARGET[i] ? 'correct' : 'wrong')}`,
+    className: "input-cyber w-12 text-center text-xl",
     value: a3Cells[i],
     onChange: e => setA3Cell(i, e.target.value),
     disabled: a3Done
@@ -1114,7 +1118,7 @@ function SectionA({
     onClick: () => setA3Cells(['', '', '', '', '', ''])
   }, "RESET")), /*#__PURE__*/React.createElement(HintLadder, {
     taskId: "A3",
-    hints: ["Each letter of CAESAR moves 7 positions forward. C → J, A → H.", "If the new position is past Z (25), wrap around. A=0, Z=25. So R(17)+7 = 24 → Y.", "The codeword is JHLZHY."]
+    hints: ["Encrypt, don't decrypt: each letter of CAESAR moves 7 positions FORWARD.", "If a letter goes past Z, wrap around: A=0 … Z=25, so R(17)+7 = 24 → Y.", "Work out all six letters on the wheel and type them in — you've got this."]
   }))));
 }
 
@@ -1174,43 +1178,23 @@ function SectionB({
     prime: false,
     factor: '11 × 19'
   }];
-  const [tested, setTested] = useState({});
+  const [decimals, setDecimals] = useState({});
   const [intruderPick, setIntruderPick] = useState(null);
   const [done, setDone] = useState(false);
-  function testServer(s) {
-    if (tested[s.id]) return;
-    setTested({
-      ...tested,
-      [s.id]: true
-    });
-    if (s.prime) {
-      addLog(`B: tested ${s.id} (${s.dec}) → PRIME ★`, 'success');
-      showToast({
-        type: 'success',
-        title: 'PRIMALITY CONFIRMED',
-        message: `${s.id} = ${s.dec} is prime. Hacker signatures are often prime — flag this.`
-      });
-    } else {
-      addLog(`B: tested ${s.id} (${s.dec}) → not prime (${s.factor})`, 'info');
-    }
+  function setDecimal(id, val) {
+    const v = (val || '').replace(/[^0-9]/g, '').slice(0, 3);
+    setDecimals(prev => ({ ...prev, [id]: v }));
   }
-  const testedCount = Object.keys(tested).length;
-  const allTested = testedCount === 8;
+  const enteredCount = Object.values(decimals).filter(v => v && v !== '').length;
   function pickIntruder(s) {
-    if (!allTested) {
-      showWarn({
-        title: 'DATA INCOMPLETE',
-        body: `Test all 8 servers before identifying the intruder. ${testedCount}/8 tested.`
-      });
-      return;
-    }
+    if (done) return;
     setIntruderPick(s.id);
     if (s.prime) {
-      addLog(`B: intruder identified — ${s.id} (${s.dec}) blocked`, 'success');
+      addLog(`B: intruder identified — ${s.id} blocked`, 'success');
       showToast({
         type: 'success',
         title: 'INTRUDER ISOLATED',
-        message: `${s.id} (IP ending ${s.dec}) blocked by firewall.`
+        message: `${s.id} blocked by the firewall. Report its IP value to Mission Control.`
       });
       setDone(true);
       setTimeout(() => {
@@ -1221,10 +1205,11 @@ function SectionB({
         });
       }, 900);
     } else {
-      addLog(`B: wrong intruder pick — ${s.id} is not prime`, 'error');
+      setTimeout(() => setIntruderPick(null), 600);
+      addLog(`B: wrong intruder pick — ${s.id}`, 'error');
       showWarn({
         title: 'WRONG TARGET',
-        body: `${s.id} = ${s.dec} is not prime (${s.factor}). The Cipher Syndicate uses a prime as its IP signature.`
+        body: `${s.id} is not the Syndicate. Convert every binary octet to decimal, then work out which single value is prime — that one is the signature.`
       });
     }
   }
@@ -1236,40 +1221,37 @@ function SectionB({
     className: "text-astonorange font-display font-bold tracking-widest text-xs mb-2"
   }, "TASK B · FIND THE INTRUDER (~10 MIN)"), /*#__PURE__*/React.createElement("div", {
     className: "text-white text-base mb-3"
-  }, "The Cipher Syndicate uses a ", /*#__PURE__*/React.createElement("strong", null, "prime number"), " as its last IP octet. Test each server's binary IP. ", /*#__PURE__*/React.createElement("strong", {
+  }, "The Cipher Syndicate uses a ", /*#__PURE__*/React.createElement("strong", null, "prime number"), " as its last IP octet. Convert each binary IP to decimal, work out which is prime, then flag it. ", /*#__PURE__*/React.createElement("strong", {
     className: "text-astonorange"
   }, "Exactly one will be prime.")), /*#__PURE__*/React.createElement("div", {
     className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-4"
   }, SERVERS.map(s => {
-    const t = tested[s.id];
     const isPicked = intruderPick === s.id;
     return /*#__PURE__*/React.createElement("div", {
       key: s.id,
-      className: `server-card ${t ? 'tested' : ''} ${t && s.prime ? 'prime' : ''} ${isPicked && s.prime ? 'selected-intruder' : ''}`
+      className: `server-card ${isPicked && s.prime ? 'selected-intruder' : ''}`
     }, /*#__PURE__*/React.createElement("div", {
-      className: "flex items-center justify-between mb-2"
-    }, /*#__PURE__*/React.createElement("div", {
-      className: "font-display font-black text-white text-xl"
-    }, s.id), t && (s.prime ? /*#__PURE__*/React.createElement("span", {
-      className: "text-termgreen text-xs font-display font-bold tracking-widest"
-    }, "★ PRIME") : /*#__PURE__*/React.createElement("span", {
-      className: "text-midgrey text-xs font-mono"
-    }, "composite"))), /*#__PURE__*/React.createElement("div", {
-      className: "font-mono text-termgreen text-lg tracking-widest mb-1"
+      className: "font-display font-black text-white text-xl mb-2"
+    }, s.id), /*#__PURE__*/React.createElement("div", {
+      className: "font-mono text-termgreen text-lg tracking-widest mb-2"
     }, s.bin.slice(0, 4), " ", s.bin.slice(4)), /*#__PURE__*/React.createElement("div", {
-      className: "font-mono text-white text-sm mb-2"
-    }, "= ", /*#__PURE__*/React.createElement("strong", null, s.dec)), !t ? /*#__PURE__*/React.createElement("button", {
-      className: "btn-ghost w-full text-xs py-1.5",
-      onClick: () => testServer(s)
-    }, "TEST PRIMALITY") : /*#__PURE__*/React.createElement("div", {
-      className: "text-xs"
-    }, /*#__PURE__*/React.createElement("div", {
-      className: "font-mono text-midgrey"
-    }, s.factor === 'PRIME' ? 'no divisors ≤ 13' : 'factors: ' + s.factor), /*#__PURE__*/React.createElement("button", {
+      className: "flex items-center gap-2 mb-2"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "font-mono text-midgrey text-sm"
+    }, "decimal ="), /*#__PURE__*/React.createElement("input", {
+      type: "text",
+      inputMode: "numeric",
+      className: "input-cyber text-center",
+      style: { width: "5rem", fontSize: "1rem", padding: "0.3rem 0.4rem" },
+      placeholder: "?",
+      value: decimals[s.id] || '',
+      disabled: done,
+      onChange: e => setDecimal(s.id, e.target.value)
+    })), /*#__PURE__*/React.createElement("button", {
       onClick: () => pickIntruder(s),
       disabled: done,
-      className: `mt-2 w-full text-xs font-display font-bold tracking-widest py-1.5 rounded border-2 transition-all ${isPicked && s.prime ? 'border-warnred bg-warnred text-white' : isPicked && !s.prime ? 'border-warnred text-warnred opacity-50' : 'border-astonpink text-astonpink hover:bg-astondeep'}`
-    }, isPicked && s.prime ? '⚠ INTRUDER' : 'FLAG AS INTRUDER')));
+      className: `w-full text-xs font-display font-bold tracking-widest py-1.5 rounded border-2 transition-all ${isPicked && s.prime ? 'border-warnred bg-warnred text-white' : 'border-astonpink text-astonpink hover:bg-astondeep'}`
+    }, isPicked && s.prime ? '⚠ INTRUDER' : 'FLAG AS INTRUDER'));
   })), /*#__PURE__*/React.createElement("div", {
     className: "bg-paperdark-2 border-l-4 border-astonpink p-3 mb-3"
   }, /*#__PURE__*/React.createElement("div", {
@@ -1280,9 +1262,9 @@ function SectionB({
     className: "font-mono"
   }, "2, 3, 5, 7, 11, 13"), ".")), /*#__PURE__*/React.createElement("div", {
     className: "text-center text-midgrey text-xs font-mono mb-2"
-  }, testedCount, "/8 SERVERS TESTED · ", done ? 'INTRUDER NEUTRALISED' : 'INTRUDER NOT YET IDENTIFIED'), /*#__PURE__*/React.createElement(HintLadder, {
+  }, enteredCount, "/8 DECIMALS ENTERED · ", done ? 'INTRUDER NEUTRALISED' : 'CONVERT, TEST FOR PRIMES, THEN FLAG THE INTRUDER'), /*#__PURE__*/React.createElement(HintLadder, {
     taskId: "B",
-    hints: ['For each binary value, add place values where there is a 1. 1100 1011 = 128+64+8+2+1 = 203.', 'A prime number has no divisors except 1 and itself. 203 = 7 × 29, so 203 is not prime.', '137 is the only prime — not divisible by 2, 3, 5, 7, or 11. So S3 (binary 1000 1001) is the Cipher Syndicate.']
+    hints: ['Convert each octet: add the place values (128 64 32 16 8 4 2 1) wherever there is a 1.', 'Test each decimal for primality — you only need to try dividing by 2, 3, 5, 7, 11 and 13.', 'Exactly one of the eight values has no divisors at all. Flag that server — it is the Syndicate.']
   })));
 }
 
@@ -1335,11 +1317,11 @@ function SectionC({
       });
       setTask('C2');
     } else {
-      const wrong = hashCorrect.map((c, i) => c === false ? indexToLetter(i) : null).filter(Boolean);
-      const blank = hashCorrect.map((c, i) => c === null ? indexToLetter(i) : null).filter(Boolean);
+      const wrong = hashCorrect.filter(c => c === false).length;
+      const blank = hashCorrect.filter(c => c === null).length;
       showWarn({
         title: 'TABLE INCOMPLETE',
-        body: `${wrong.length > 0 ? wrong.length + ' incorrect: ' + wrong.join(', ') + '. ' : ''}${blank.length > 0 ? blank.length + ' blank: ' + blank.join(', ') + '. ' : ''}Use h(x) = (3x + 7) mod 26.`
+        body: `${blank > 0 ? blank + ' still blank. ' : ''}${wrong > 0 ? wrong + ' not correct yet. ' : ''}Re-check your working with h(x) = (3x + 7) mod 26 — it will not say which.`
       });
     }
   }
@@ -1467,7 +1449,7 @@ function SectionC({
     }, "→"), /*#__PURE__*/React.createElement("input", {
       type: "text",
       maxLength: 1,
-      className: `input-cyber w-12 h-9 text-center text-base ${correct === true ? 'correct' : correct === false ? 'wrong' : ''} ${isPreset ? 'opacity-80' : ''}`,
+      className: `input-cyber w-12 h-9 text-center text-base ${isPreset ? "opacity-80 correct" : ""}`,
       value: v,
       readOnly: isPreset,
       onChange: e => setHashCell(i, e.target.value)
@@ -1481,7 +1463,7 @@ function SectionC({
     onClick: checkC1
   }, c1Complete ? '▶ CONTINUE TO C2' : 'CHECK TABLE'), /*#__PURE__*/React.createElement(HintLadder, {
     taskId: "C1",
-    hints: ['For each letter, multiply position by 3, add 7, then take mod 26. For B: 3×1+7 = 10 → K.', 'If the result is ≥ 26, subtract 26. T is x=19, 3(19)+7 = 64 → 64−26=38 → 38−26=12 → M.', 'Compute systematically. A→H, B→K, C→N, D→Q, E→T, F→W, G→Z, H→C, I→F, J→I, K→L, L→O.']
+    hints: ['For each letter, multiply its position by 3, add 7, then take mod 26. For B: 3×1+7 = 10 → K.', 'If the result is 26 or more, keep subtracting 26. T (x=19): 3(19)+7 = 64 → 12 → M.', 'Work down the alphabet one letter at a time. Use the pre-filled A, M and Z to check yourself.']
   })), task === 'C2' && /*#__PURE__*/React.createElement("div", {
     className: "card p-5 animate-fade-in"
   }, /*#__PURE__*/React.createElement("div", {
@@ -1500,7 +1482,7 @@ function SectionC({
   }, "↓ h(x)"), /*#__PURE__*/React.createElement("input", {
     type: "text",
     maxLength: 1,
-    className: `input-cyber w-12 text-center text-xl ${c2Cells[i] && (c2Cells[i] === SECURE_HASH[i] ? 'correct' : 'wrong')}`,
+    className: "input-cyber w-12 text-center text-xl",
     value: c2Cells[i],
     disabled: c2Done,
     onChange: e => setC2Cell(i, e.target.value)
@@ -1518,7 +1500,7 @@ function SectionC({
     onClick: () => setTask('C3')
   }, "NEXT: C3 ▶")), /*#__PURE__*/React.createElement(HintLadder, {
     taskId: "C2",
-    hints: ['S is x=18. h(18) = (54+7) mod 26 = 61 mod 26 = 9 → J.', 'Use your C1 master table — read off each hash for S, E, C, U, R, E.', 'SECURE → JTNPGT. Note E appears twice, both become T.']
+    hints: ['S is x=18. h(18) = (54+7) mod 26 = 61 mod 26 = 9 → J. That is the first letter.', 'Read each hash straight off your C1 master table for S, E, C, U, R, E.', 'E appears twice and must hash to the same letter both times — use that to check yourself.']
   })), task === 'C3' && /*#__PURE__*/React.createElement("div", {
     className: "card p-5 animate-fade-in"
   }, /*#__PURE__*/React.createElement("div", {
@@ -1545,7 +1527,7 @@ function SectionC({
   }, "↑ h⁻¹"), /*#__PURE__*/React.createElement("input", {
     type: "text",
     maxLength: 1,
-    className: `input-cyber w-12 text-center text-xl ${c3Cells[i] && (c3Cells[i] === CRACK_PLAIN[i] ? 'correct' : 'wrong')}`,
+    className: "input-cyber w-12 text-center text-xl",
     value: c3Cells[i],
     disabled: c3Done,
     onChange: e => setC3Cell(i, e.target.value)
@@ -1568,7 +1550,7 @@ function SectionC({
     className: "font-mono text-termgreen"
   }, "h⁻¹(y) = 9(y − 7) mod 26"), ", because 3 × 9 = 27 ≡ 1 (mod 26).")), /*#__PURE__*/React.createElement(HintLadder, {
     taskId: "C3",
-    hints: ['Read your C1 table backwards — which plain letter has h(x) = M? Find M in the right column.', 'Or compute: h⁻¹(y) = 9(y−7) mod 26. For M (y=12): 9(12−7) = 45 mod 26 = 19 → T.', 'The password is TROJAN.']
+    hints: ['Read your C1 table backwards — which plain letter has h(x) = M? Find M in the hash column.', 'Or compute h⁻¹(y) = 9(y−7) mod 26. For M (y=12): 9(12−7) = 45 mod 26 = 19 → T.', 'Reverse all six letters — it spells a famous type of malware named after an ancient Greek trick.']
   })));
 }
 
@@ -1651,43 +1633,40 @@ function SectionD({
     }
   }
   const D3_N = 1517;
-  const D3_PRIMES = [37, 41, 43, 47, 53, 59, 61, 67, 71, 73];
-  const D3_TRUE = [37, 41];
-  const [d3Tested, setD3Tested] = useState({});
-  const [d3FoundFactors, setD3FoundFactors] = useState([]);
+  const [d3P, setD3P] = useState('');
+  const [d3Q, setD3Q] = useState('');
+  const [d3FactorsOK, setD3FactorsOK] = useState(false);
   const [d3PhiInput, setD3PhiInput] = useState('');
   const [d3Done, setD3Done] = useState(false);
-  function testD3Prime(p) {
-    if (d3Tested[p]) return;
-    const q = D3_N / p;
-    const isFactor = Number.isInteger(q);
-    setD3Tested({
-      ...d3Tested,
-      [p]: isFactor ? `= ${q} ✓` : `= ${q.toFixed(2)} ✗`
-    });
-    if (isFactor) {
-      const found = Array.from(new Set([...d3FoundFactors, p, q]));
-      setD3FoundFactors(found);
-      addLog(`D3: ${D3_N} ÷ ${p} = ${q} — factor found`, 'success');
-      showToast({
-        type: 'success',
-        title: 'FACTOR FOUND',
-        message: `${D3_N} = ${p} × ${q}.`
-      });
-    } else {
-      addLog(`D3: ${D3_N} ÷ ${p} = ${q.toFixed(2)} — not a factor`, 'info');
+  function isPrimeNum(x) {
+    if (x < 2) return false;
+    for (let i = 2; i * i <= x; i++) if (x % i === 0) return false;
+    return true;
+  }
+  function checkD3Factors() {
+    const p = parseInt(d3P, 10), q = parseInt(d3Q, 10);
+    if (!Number.isFinite(p) || !Number.isFinite(q)) {
+      showWarn({ title: 'ENTER TWO NUMBERS', body: 'Type the two prime factors of 1517, then press CHECK FACTORS.' });
+      return;
     }
+    if (p * q !== D3_N) {
+      showWarn({ title: 'NOT A FACTOR PAIR', body: `${p} × ${q} = ${p * q}, not ${D3_N}. Try dividing ${D3_N} by primes above 31 (√1517 ≈ 38.9).` });
+      return;
+    }
+    if (!isPrimeNum(p) || !isPrimeNum(q)) {
+      showWarn({ title: 'NOT BOTH PRIME', body: `${p} × ${q} = ${D3_N}, but both factors must be prime. Keep factorising.` });
+      return;
+    }
+    setD3FactorsOK(true);
+    addLog(`D3: ${D3_N} = ${p} × ${q}`, 'success');
+    showToast({ type: 'success', title: 'FACTORS FOUND', message: `${D3_N} = ${p} × ${q}. Now work out φ.` });
   }
   function submitPhi() {
     const n = parseInt(d3PhiInput, 10);
     if (n === 1440) {
       setD3Done(true);
-      addLog('D3: φ(1517) = 1440 ✓', 'success');
-      showToast({
-        type: 'success',
-        title: 'MASTER KEY DECODED',
-        message: 'φ(1517) = 36 × 40 = 1440.'
-      });
+      addLog('D3: φ(1517) = 1440', 'success');
+      showToast({ type: 'success', title: 'MASTER KEY DECODED', message: 'φ(1517) = 36 × 40 = 1440.' });
       setTimeout(() => {
         onComplete('D', `1517 = 37 × 41, φ = 1440`, {
           sectionName: 'THE PRIME VAULT',
@@ -1696,10 +1675,7 @@ function SectionD({
         });
       }, 900);
     } else {
-      showWarn({
-        title: 'WRONG TOTIENT',
-        body: `φ(n) = (p − 1)(q − 1). You have p = 37, q = 41. Compute (37 − 1)(41 − 1).`
-      });
+      showWarn({ title: 'WRONG TOTIENT', body: `φ(n) = (p − 1)(q − 1). Use your two prime factors and compute it carefully.` });
     }
   }
   return /*#__PURE__*/React.createElement("div", {
@@ -1763,7 +1739,7 @@ function SectionD({
     onClick: () => setTask('D2')
   }, "NEXT: D2 ▶"), /*#__PURE__*/React.createElement(HintLadder, {
     taskId: "D1",
-    hints: ['91 ÷ 7 = 13. So 91 = 7 × 13.', '187 ÷ 11 = 17. So 187 = 11 × 17.', '437 ÷ 19 = 23. So 437 = 19 × 23.']
+    hints: ['Divide each n by the small primes in turn: 2, 3, 5, 7, 11 … stop when one divides exactly.', '91 is odd and not a multiple of 3 or 5, so begin at 7. For 187 try 11. 437 is the toughest.', 'Each n is exactly two primes multiplied. Find the smaller by trial division; the other is n ÷ it.']
   })), task === 'D2' && /*#__PURE__*/React.createElement("div", {
     className: "card p-5 animate-fade-in"
   }, /*#__PURE__*/React.createElement("div", {
@@ -1799,34 +1775,37 @@ function SectionD({
     className: "mb-4"
   }, /*#__PURE__*/React.createElement("div", {
     className: "text-astonpink font-display font-bold tracking-widest text-xs mb-2"
-  }, "CLICK TO TEST EACH PRIME — DIVIDES INTO 1517?"), /*#__PURE__*/React.createElement("div", {
-    className: "flex flex-wrap gap-2"
-  }, D3_PRIMES.map(p => {
-    const result = d3Tested[p];
-    const isFactor = D3_TRUE.includes(p);
-    return /*#__PURE__*/React.createElement("button", {
-      key: p,
-      onClick: () => testD3Prime(p),
-      disabled: !!d3Tested[p],
-      className: `prime-btn ${result && isFactor ? 'correct' : result && !isFactor ? 'wrong' : ''}`
-    }, p, " ", result && /*#__PURE__*/React.createElement("span", {
-      className: "font-mono text-xs ml-1"
-    }, result));
-  }))), d3FoundFactors.length >= 2 && /*#__PURE__*/React.createElement("div", {
+  }, "ENTER THE TWO PRIME FACTORS OF 1517"), /*#__PURE__*/React.createElement("div", {
+    className: "flex flex-wrap items-center gap-3"
+  }, /*#__PURE__*/React.createElement("input", {
+    type: "number",
+    className: "input-cyber w-24 text-center",
+    placeholder: "p",
+    value: d3P,
+    disabled: d3FactorsOK,
+    onChange: e => setD3P(e.target.value)
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "font-mono text-white text-xl"
+  }, "×"), /*#__PURE__*/React.createElement("input", {
+    type: "number",
+    className: "input-cyber w-24 text-center",
+    placeholder: "q",
+    value: d3Q,
+    disabled: d3FactorsOK,
+    onChange: e => setD3Q(e.target.value)
+  }), /*#__PURE__*/React.createElement("button", {
+    className: "btn-primary",
+    disabled: d3FactorsOK,
+    onClick: checkD3Factors
+  }, d3FactorsOK ? '✓ FACTORS OK' : 'CHECK FACTORS'))), d3FactorsOK && /*#__PURE__*/React.createElement("div", {
     className: "animate-slide-up bg-paperdark-2 border-2 border-termgreen rounded p-3 mb-4"
   }, /*#__PURE__*/React.createElement("div", {
     className: "text-termgreen font-display font-bold tracking-widest text-xs mb-2"
-  }, "✓ FACTORS FOUND"), /*#__PURE__*/React.createElement("div", {
-    className: "font-mono text-white text-lg mb-3"
-  }, D3_N, " = ", /*#__PURE__*/React.createElement("span", {
-    className: "text-termgreen"
-  }, d3FoundFactors[0]), " × ", /*#__PURE__*/React.createElement("span", {
-    className: "text-termgreen"
-  }, d3FoundFactors[1])), /*#__PURE__*/React.createElement("div", {
+  }, "✓ FACTORS CONFIRMED"), /*#__PURE__*/React.createElement("div", {
     className: "text-white text-sm mb-3"
   }, "Now compute Euler's totient: ", /*#__PURE__*/React.createElement("strong", {
     className: "font-mono text-astonorange"
-  }, "φ(n) = (p − 1)(q − 1) = (36)(40) = ?")), /*#__PURE__*/React.createElement("div", {
+  }, "φ(n) = (p − 1)(q − 1)")), /*#__PURE__*/React.createElement("div", {
     className: "flex flex-wrap items-center gap-3"
   }, /*#__PURE__*/React.createElement("input", {
     type: "number",
@@ -1841,7 +1820,7 @@ function SectionD({
     onClick: submitPhi
   }, d3Done ? '✓ CONFIRMED' : 'SUBMIT φ'))), /*#__PURE__*/React.createElement(HintLadder, {
     taskId: "D3",
-    hints: ['The hint says skip primes ≤ 31. So your first candidate is 37. Try it.', 'If 37 is a factor, the other factor is 1517 ÷ 37. What is that?', '1517 = 37 × 41. Then φ(1517) = 36 × 40 = 1440.']
+    hints: ['Skip every prime up to 31 (the hint rules them out). Your first candidate to try is 37.', 'If a prime divides 1517 exactly, the other factor is 1517 ÷ that prime. Is it prime too?', 'Once you have p and q, the totient is (p − 1) × (q − 1). Do that multiplication carefully.']
   })));
 }
 
@@ -1994,9 +1973,9 @@ function SectionE({
     disabled: stage1Done,
     onChange: e => setCell(1, i, e.target.value),
     style: {
-      background: stage1[i] === E1_STAGE1[i] ? 'rgba(0,255,102,0.15)' : 'rgba(0,0,0,0.65)',
+      background: 'rgba(0,0,0,0.65)',
       color: 'white',
-      borderColor: stage1[i] ? stage1[i] === E1_STAGE1[i] ? 'var(--termgreen)' : 'var(--warnred)' : 'var(--astonorange)'
+      borderColor: 'var(--astondeep)'
     }
   }))), /*#__PURE__*/React.createElement("div", {
     className: "mt-2 flex gap-2"
@@ -2025,9 +2004,9 @@ function SectionE({
     disabled: stage2Done,
     onChange: e => setCell(2, i, e.target.value),
     style: {
-      background: stage2[i] === E1_STAGE2[i] ? 'rgba(0,255,102,0.15)' : 'rgba(0,0,0,0.65)',
+      background: 'rgba(0,0,0,0.65)',
       color: 'white',
-      borderColor: stage2[i] ? stage2[i] === E1_STAGE2[i] ? 'var(--termgreen)' : 'var(--warnred)' : 'var(--astonorange)'
+      borderColor: 'var(--astondeep)'
     }
   }))), /*#__PURE__*/React.createElement("div", {
     className: "mt-2 flex gap-2"
@@ -2049,7 +2028,7 @@ function SectionE({
     className: "font-display font-black text-white text-2xl tracking-wider"
   }, "ASTON IS SAFE."))), /*#__PURE__*/React.createElement(HintLadder, {
     taskId: "E1",
-    hints: ["Reverse Caesar +5 means shift each letter back 5. M(12)−5=7→H. O(14)−5=9→J.", "For Step 2, use your inverse hash. H came from A (h(A)=H). J came from S. M came from T.", "Stage 1: HJMXU FJ JHWT. Stage 2: ASTON IS SAFE."]
+    hints: ["Reverse Caesar +5 means shift each letter back by 5. M(12)−5=7→H. O(14)−5=9→J.", "For Step 2, reverse the hash with h⁻¹(y) = 9(y−7) mod 26, or read your C1 table backwards.", "It decodes to a short three-word reassurance about the university — type it in to confirm."]
   })), task === 'E2' && /*#__PURE__*/React.createElement("div", {
     className: "card p-5 animate-fade-in"
   }, /*#__PURE__*/React.createElement("div", {
@@ -2102,7 +2081,7 @@ function CompletionScreen({
     className: "max-w-4xl mx-auto px-4 py-6 animate-fade-in"
   }, /*#__PURE__*/React.createElement("div", {
     className: "text-center mb-6"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("img", { src: LOGO_WHITE, alt: "AUMS", className: "mx-auto mb-4", style: { width: "min(260px, 66%)" } }), /*#__PURE__*/React.createElement("div", {
     className: "text-termgreen font-display font-bold tracking-widest text-xs mb-2"
   }, "▶ CLASSIFIED // OPERATION DEBRIEF"), /*#__PURE__*/React.createElement("h1", {
     className: "font-display font-black text-white",
@@ -2208,6 +2187,132 @@ function CompletionScreen({
   }, "▶ NEW MISSION")));
 }
 
+
+// === MISSION CONTROL (teacher leaderboard) ===
+function MissionControl({ onExit }) {
+  const h = React.createElement;
+  const KEY = 'of_mission_control_v1';
+  const STAGES = ['A', 'B', 'C', 'D', 'E'];
+  const SNAMES = ['Authentication', 'Firewall', 'Hash function', 'Prime vault', 'Quantum'];
+  const [teams, setTeams] = useState(function () {
+    try { return JSON.parse(localStorage.getItem(KEY)) || []; } catch (e) { return []; }
+  });
+  const [name, setName] = useState('');
+  const [now, setNow] = useState(Date.now());
+  useEffect(function () {
+    const t = setInterval(function () { setNow(Date.now()); }, 1000);
+    return function () { clearInterval(t); };
+  }, []);
+  useEffect(function () {
+    try { localStorage.setItem(KEY, JSON.stringify(teams)); } catch (e) {}
+  }, [teams]);
+  function addTeam() {
+    const n = name.trim().toUpperCase();
+    if (!n) return;
+    if (teams.some(function (t) { return t.name === n; })) { setName(''); return; }
+    setTeams(teams.concat([{ id: Date.now() + '_' + Math.floor(Math.random() * 1e6), name: n, stage: 0, startedAt: null, finishedAt: null }]));
+    setName('');
+  }
+  function update(id, fn) {
+    setTeams(function (prev) { return prev.map(function (t) { return t.id === id ? fn(Object.assign({}, t)) : t; }); });
+  }
+  function adjust(id, d) {
+    update(id, function (t) {
+      t.stage = Math.max(0, Math.min(5, t.stage + d));
+      if (t.stage > 0 && !t.startedAt) t.startedAt = Date.now();
+      t.finishedAt = t.stage === 5 ? (t.finishedAt || Date.now()) : null;
+      return t;
+    });
+  }
+  function resetTeam(id) { update(id, function (t) { t.stage = 0; t.startedAt = null; t.finishedAt = null; return t; }); }
+  function removeTeam(id) { setTeams(function (prev) { return prev.filter(function (t) { return t.id !== id; }); }); }
+  function resetAll() {
+    if (window.confirm('Reset progress and timers for ALL teams? (Team names are kept.)'))
+      setTeams(function (prev) { return prev.map(function (t) { return Object.assign({}, t, { stage: 0, startedAt: null, finishedAt: null }); }); });
+  }
+  function clearAll() { if (window.confirm('Remove ALL teams completely?')) setTeams([]); }
+  function elapsedOf(t) {
+    if (!t.startedAt) return 0;
+    const end = t.finishedAt || now;
+    return Math.max(0, Math.floor((end - t.startedAt) / 1000));
+  }
+  const ranked = teams.slice().sort(function (a, b) {
+    const af = a.finishedAt ? 1 : 0, bf = b.finishedAt ? 1 : 0;
+    if (af !== bf) return bf - af;
+    if (a.finishedAt && b.finishedAt) return elapsedOf(a) - elapsedOf(b);
+    if (b.stage !== a.stage) return b.stage - a.stage;
+    return elapsedOf(a) - elapsedOf(b);
+  });
+  const bestId = ranked.length && ranked[0].finishedAt ? ranked[0].id : null;
+
+  return h('div', { className: 'min-h-screen' },
+    h('div', { className: 'bg-astonorange w-full' },
+      h('div', { className: 'max-w-6xl mx-auto px-4 py-2 flex items-center justify-between' },
+        h('img', { src: LOGO_WHITE, alt: 'AUMS', style: { height: '17px' } }),
+        h('span', { className: 'font-display text-white text-xs sm:text-sm font-bold tracking-widest' }, 'MISSION CONTROL // TEACHER')
+      )
+    ),
+    h('div', { className: 'max-w-6xl mx-auto px-4 py-5' },
+      h('div', { className: 'flex items-end justify-between flex-wrap gap-3 mb-4' },
+        h('div', null,
+          h('h1', { className: 'font-display font-black text-white', style: { fontSize: 'clamp(1.7rem,4vw,2.6rem)', lineHeight: 1 } }, 'LIVE LEADERBOARD'),
+          h('div', { className: 'text-midgrey font-mono text-xs mt-1' }, 'Tap a team forward as they report in. Saved on this device — leave this tab open all session.')
+        ),
+        h('button', { className: 'btn-ghost', onClick: onExit }, '◀ BACK TO MISSION')
+      ),
+      h('div', { className: 'card p-3 mb-4 flex flex-wrap items-center gap-2' },
+        h('input', { className: 'input-cyber', style: { flex: '1 1 220px' }, maxLength: 24, placeholder: 'ADD TEAM NAME', value: name,
+          onChange: function (e) { setName(e.target.value.toUpperCase()); },
+          onKeyDown: function (e) { if (e.key === 'Enter') addTeam(); } }),
+        h('button', { className: 'btn-primary', onClick: addTeam }, '+ ADD TEAM'),
+        h('div', { style: { flex: '1 1 auto' } }),
+        h('button', { className: 'btn-ghost', onClick: resetAll }, 'RESET ALL'),
+        h('button', { className: 'btn-ghost', style: { borderColor: 'var(--warnred)', color: 'var(--warnred)' }, onClick: clearAll }, 'CLEAR')
+      ),
+      teams.length === 0
+        ? h('div', { className: 'card p-8 text-center text-midgrey font-mono' }, 'No teams yet. Add each team above as they sit down.')
+        : h('div', { className: 'space-y-2' },
+            ranked.map(function (t, idx) {
+              const el = elapsedOf(t);
+              const done = !!t.finishedAt;
+              const isBest = t.id === bestId;
+              return h('div', { key: t.id, className: 'card p-3', style: isBest ? { borderColor: 'var(--termgreen)' } : (done ? { borderColor: 'var(--astonpink)' } : {}) },
+                h('div', { className: 'flex items-center gap-3 flex-wrap' },
+                  h('div', { className: 'font-display font-black text-2xl', style: { color: idx === 0 ? 'var(--astonorange)' : 'var(--midgrey)', width: '2rem', textAlign: 'center' } }, idx + 1),
+                  h('div', { style: { flex: '1 1 200px', minWidth: '170px' } },
+                    h('div', { className: 'font-display font-bold text-white tracking-wider', style: { fontSize: '1.05rem' } },
+                      t.name, isBest ? h('span', { className: 'text-termgreen text-xs ml-2' }, '★ FASTEST') : null),
+                    h('div', { className: 'flex gap-1 mt-1' },
+                      STAGES.map(function (L, si) {
+                        const reached = t.stage > si;
+                        return h('div', { key: L, title: SNAMES[si], className: 'font-display font-bold',
+                          style: { width: '1.7rem', height: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '3px', fontSize: '0.8rem',
+                            background: reached ? 'var(--termgreen)' : 'var(--paperdark)', color: reached ? 'var(--paperdark)' : 'var(--midgrey)',
+                            border: '1px solid ' + (reached ? 'var(--termgreen)' : 'var(--astondeep)') } }, L);
+                      })
+                    )
+                  ),
+                  h('div', { className: 'text-center', style: { width: '8.5rem' } },
+                    h('div', { className: 'font-mono text-xs text-midgrey' },
+                      done ? 'COMPLETE' : (t.stage === 0 ? (t.startedAt ? 'IN PROGRESS' : 'NOT STARTED') : 'ON SECTION ' + STAGES[t.stage])),
+                    h('div', { className: 'font-display font-bold', style: { color: done ? 'var(--termgreen)' : 'var(--white)', fontSize: '1.15rem' } }, fmtTime(el))
+                  ),
+                  h('div', { className: 'flex items-center gap-1' },
+                    h('button', { className: 'prime-btn', style: { minWidth: '2.4rem', padding: '0.4rem 0.6rem' }, onClick: function () { adjust(t.id, -1); }, disabled: t.stage === 0 }, '−'),
+                    h('button', { className: 'prime-btn', style: { minWidth: '2.4rem', padding: '0.4rem 0.6rem', background: done ? 'var(--astondeep)' : 'var(--astonpink)', borderColor: 'var(--astonpink)' }, onClick: function () { adjust(t.id, 1); }, disabled: done }, '+'),
+                    h('button', { className: 'btn-ghost', style: { padding: '0.4rem 0.6rem', fontSize: '0.7rem' }, onClick: function () { resetTeam(t.id); } }, 'RESET'),
+                    h('button', { className: 'btn-ghost', style: { padding: '0.4rem 0.5rem', fontSize: '0.7rem', borderColor: 'var(--warnred)', color: 'var(--warnred)' }, onClick: function () { removeTeam(t.id); } }, '✕')
+                  )
+                )
+              );
+            })
+          ),
+      h('div', { className: 'text-midgrey font-mono text-xs mt-4 leading-relaxed' },
+        'Each pip = one section breached (A–E). + advances a team as they report in; the clock stops when they finish all five. Ranking: finishers by time, then teams furthest along. Everything saves on this device.')
+    )
+  );
+}
+
 // === MAIN APP ===
 function App() {
   const [view, setView] = useState('intro');
@@ -2244,6 +2349,12 @@ function App() {
     const t = setInterval(() => setElapsed(Math.floor((Date.now() - startTime) / 1000)), 1000);
     return () => clearInterval(t);
   }, [startTime, completionTime]);
+  useEffect(() => {
+    function applyHash() { if (window.location.hash === '#control') setView('control'); }
+    applyHash();
+    window.addEventListener('hashchange', applyHash);
+    return () => window.removeEventListener('hashchange', applyHash);
+  }, []);
   function addLog(msg, type = 'info') {
     const t = new Date().toLocaleTimeString('en-GB', {
       hour12: false
@@ -2331,7 +2442,7 @@ function App() {
   }
   return /*#__PURE__*/React.createElement("div", {
     className: "min-h-screen pb-24"
-  }, view !== 'intro' && /*#__PURE__*/React.createElement(ClassifiedHeader, {
+  }, view !== 'intro' && view !== 'control' && /*#__PURE__*/React.createElement(ClassifiedHeader, {
     schoolName: school,
     teamName: team,
     elapsed: elapsed
@@ -2341,6 +2452,8 @@ function App() {
     setSchool: setSchool,
     setTeam: setTeam,
     onStart: startMission
+  }), view === 'control' && /*#__PURE__*/React.createElement(MissionControl, {
+    onExit: function () { window.location.hash = ''; setView('intro'); }
   }), view === 'briefing' && /*#__PURE__*/React.createElement(MissionBriefing, {
     onContinue: () => setView('map')
   }), view === 'map' && /*#__PURE__*/React.createElement(SectionMap, {

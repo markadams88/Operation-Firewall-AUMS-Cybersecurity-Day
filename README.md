@@ -14,7 +14,9 @@ Each layer is a real branch of cryptography — Caesar ciphers, primality, hash 
 
 That's it. No build step, no dependencies to install. The JSX is pre-compiled; the file just needs React + Tailwind from public CDNs on first load.
 
-The app is ~108 KB of HTML/CSS/JS with all five sections, popups, warnings, well-done screens, a Caesar wheel, a frequency analyser, a hash-table builder, a binary primality forensics grid, an RSA factorisation puzzle, a composite cipher decoder, a Mission Control terminal log, and a 3-rung hint ladder on every task.
+The app is ~135 KB of HTML/CSS/JS with all five sections, popups, warnings, well-done screens, a Caesar wheel, a frequency analyser, a hash-table builder, a binary primality forensics grid, an RSA factorisation puzzle, a composite cipher decoder, a terminal log, and a 3-rung hint ladder on every task. The official Aston University Mathematics School logo is embedded in the file (no external image needed).
+
+**Students do the maths themselves.** The app never auto-solves a task — there is no live decoder, no "test if prime" button, and no answer printed in the hint ladder. Each task only *confirms* a final answer once the team has worked it out and typed it in, so teams can't click their way to the end.
 
 ---
 
@@ -29,6 +31,25 @@ The app is ~108 KB of HTML/CSS/JS with all five sections, popups, warnings, well
 | **E** | The Quantum Gauntlet | Composition of inverses · post-quantum reasoning | Shor's algorithm · CRYSTALS-Kyber | `ASTON IS SAFE` |
 
 The full puzzle progression is gated: students cannot enter Section B until they have completed Section A, and so on. Section E ends with an open-ended cipher-design task explicitly framed as "no team is expected to finish."
+
+---
+
+## Mission Control — live leaderboard (teacher)
+
+A built-in leaderboard you run on **one** screen (laptop or projector). No setup, no accounts — everything saves in that browser.
+
+**To open it:** on the start screen click **⬢ MISSION CONTROL (TEACHER)**, or add `#control` to the end of the URL, e.g. `https://YOUR-USERNAME.github.io/operation-firewall/#control`. Bookmark that link.
+
+**On the day:** add each team as they sit down. When a team REPORTS IN with a correct codeword, tap **+** to advance them a section (A→B→C→D→E). The board shows, live:
+
+- how far each team has got (the A–E pips light up),
+- a running timer per team (it stops automatically when they finish all five),
+- a live ranking — finishers by fastest time, then the teams furthest along,
+- a ★ on the fastest finisher.
+
+**−** steps a team back, **RESET** clears one team (keeping its name), **RESET ALL** resets every team for the next group, and **CLEAR** removes all teams.
+
+> Why a teacher-run board? GitHub Pages only serves static files, so a page can't sync a shared leaderboard across the teams' separate devices by itself. Running the board on your one screen needs zero setup and is rock-solid on the day. If you ever want teams to update it live from their own devices, that needs a small free database (e.g. Firebase) — it can be added on request.
 
 ---
 
